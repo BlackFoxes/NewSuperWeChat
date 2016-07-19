@@ -17,6 +17,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,9 +30,14 @@ import cn.ucai.superwechat.SuperWeChatApplication;
 
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.listener.OnSetAvatarListener;
+import cn.ucai.superwechat.utils.FileUtils;
+import cn.ucai.superwechat.utils.OkHttpUtils2;
 
 import com.easemob.exceptions.EaseMobException;
+
+import java.io.File;
 
 /**
  * 注册页
@@ -46,6 +52,11 @@ public class RegisterActivity extends BaseActivity {
 	OnSetAvatarListener setAvatar;
 	private ImageView mAvatar;
 	String avatarName;
+	private static final String TAG = RegisterActivity.class.getSimpleName();
+	ProgressDialog pd;
+	String nickname;
+	String username;
+	String pwd;
 
 
 
@@ -90,7 +101,7 @@ public class RegisterActivity extends BaseActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode ==RESULT_OK) {
+		if (resultCode !=RESULT_OK) {
 			return;
 
 		}
@@ -116,9 +127,9 @@ public class RegisterActivity extends BaseActivity {
 	 */
 	private void register() {
 
-		final String username = userNameEditText.getText().toString().trim();
-		final String nickname = nickNameEditText.getText().toString().trim();
-		final String pwd = passwordEditText.getText().toString().trim();
+		username = userNameEditText.getText().toString().trim();
+		nickname = nickNameEditText.getText().toString().trim();
+		pwd = passwordEditText.getText().toString().trim();
 		String confirm_pwd = confirmPwdEditText.getText().toString().trim();
 		if (TextUtils.isEmpty(username)) {
 			Toast.makeText(this, getResources().getString(R.string.User_name_cannot_be_empty), Toast.LENGTH_SHORT).show();
@@ -146,16 +157,53 @@ public class RegisterActivity extends BaseActivity {
 		}
 
 		if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(pwd)) {
-			final ProgressDialog pd = new ProgressDialog(this);
+			pd = new ProgressDialog(this);
 			pd.setMessage(getResources().getString(R.string.Is_the_registered));
 			pd.show();
+			Log.i(TAG, "pwd=" + pwd + ",username=" + username + ",nickname=" + nickname);
+			registerLocalServer();
 
-			registerEM(username, pwd, pd);
+
 
 		}
 	}
 
-	private void registerEM(final String username, final String pwd, final ProgressDialog pd) {
+	private void registerLocalServer() {
+		File file = new File(OnSetAvatarListener.getAvatarPath(RegisterActivity.this, I.AVATAR_TYPE_USER_PATH),getAvatarName()+I.AVATAR_SUFFIX_JPG);
+
+		OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
+		utils2.setRequestUrl(I.REQUEST_REGISTER)
+				.addParam(I.User.USER_NAME,username)
+				.addParam(I.User.PASSWORD,pwd)
+				.addParam(I.User.NICK,nickname)
+				.targetClass(Result.class)
+				.addFile(file)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						if (result.isRetMsg()) {
+							Log.i(TAG, result.toString());
+							registerEMServer();
+
+						} else {
+							pd.dismiss();
+							Log.i(TAG, "cuowu");
+						}
+
+					}
+
+					@Override
+					public void onError(String error) {
+						pd.dismiss();
+						Log.i(TAG, error.toString());
+
+					}
+				});
+
+
+	}
+
+	private void registerEMServer() {
 		new Thread(new Runnable() {
             public void run() {
                 try {
