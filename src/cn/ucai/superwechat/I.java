@@ -2,7 +2,9 @@ package cn.ucai.superwechat;
 
 public interface I {
 
-	  interface User {
+
+
+	interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
 		String USER_NAME 							= 		"m_user_name";					//用户账号
 		String PASSWORD 							= 		"m_user_password";				//用户密码
@@ -58,8 +60,8 @@ public interface I {
 		String UPDATE_TIME 							= 		"m_location_last_update_time";	//最后更新时间
 	}
 
-
-	String ROOT_SERVER 								= 		"http://10.0.2.2:8080/SuperWeChatServer/Server";
+	String QUESTION 								= 		"?";
+	String SERVER_ROOT 								= 		"http://10.0.2.2:8080/SuperWeChatServer/Server";
 	//	String AVATAR_PATH 								= 		"E:/test/";
 	String ISON8859_1 								= 		"iso8859-1";
 	String UTF_8 									= 		"utf-8";
