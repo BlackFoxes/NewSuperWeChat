@@ -59,7 +59,7 @@ public interface I {
 	}
 
 
-	String ROOT_URL 								= 		"http://10.0.2.2:8080/SuperWeChatServer/Server";
+	String ROOT_SERVER 								= 		"http://10.0.2.2:8080/SuperWeChatServer/Server";
 	//	String AVATAR_PATH 								= 		"E:/test/";
 	String ISON8859_1 								= 		"iso8859-1";
 	String UTF_8 									= 		"utf-8";
