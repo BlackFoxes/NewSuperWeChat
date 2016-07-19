@@ -1,6 +1,6 @@
 package cn.ucai.superwechat;
 
-interface I {
+public interface I {
 
 	  interface User {
 		String TABLE_NAME							=		"t_superwechat_user";

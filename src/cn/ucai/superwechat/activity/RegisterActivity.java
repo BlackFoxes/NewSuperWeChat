@@ -18,12 +18,17 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import cn.ucai.superwechat.DemoApplication;
+
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.listener.OnSetAvatarListener;
+
 import com.easemob.exceptions.EaseMobException;
 
 /**
@@ -34,28 +39,83 @@ public class RegisterActivity extends BaseActivity {
 	private EditText userNameEditText;
 	private EditText passwordEditText;
 	private EditText confirmPwdEditText;
+	private EditText nickNameEditText;
+	private RelativeLayout mlayout;
+	OnSetAvatarListener setAvatar;
+	String avatarName;
+
+
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		initView();
+		setListener();
+
+	}
+
+	private void setListener() {
+		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+
+			}
+		});
+		findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				register();
+
+			}
+		});
+		mlayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setAvatar = new OnSetAvatarListener(RegisterActivity.this, R.id.layout_register, getAvatarName(), I.AVATAR_TYPE_USER_PATH);
+
+			}
+		});
+
+
+
+	}
+
+	private void initView() {
+		mlayout = (RelativeLayout) findViewById(R.id.up_avatar);
+		nickNameEditText = (EditText) findViewById(R.id.nickname);
 		userNameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
+
+
 	}
 
 	/**
 	 * 注册
 	 * 
-	 * @param view
+	 * @param
 	 */
-	public void register(View view) {
+	private void register() {
+
 		final String username = userNameEditText.getText().toString().trim();
+		final String nickname = nickNameEditText.getText().toString().trim();
 		final String pwd = passwordEditText.getText().toString().trim();
 		String confirm_pwd = confirmPwdEditText.getText().toString().trim();
 		if (TextUtils.isEmpty(username)) {
 			Toast.makeText(this, getResources().getString(R.string.User_name_cannot_be_empty), Toast.LENGTH_SHORT).show();
 			userNameEditText.requestFocus();
+			return;
+		}else if (!username.matches("[\\w][\\w\\d_]+")) {
+			Toast.makeText(this, getResources().getString(R.string.illegal_user_name), Toast.LENGTH_SHORT).show();
+			userNameEditText.requestFocus();
+			return;
+		}else if (TextUtils.isEmpty(nickname)) {
+			Toast.makeText(this, getResources().getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
+			nickNameEditText.requestFocus();
 			return;
 		} else if (TextUtils.isEmpty(pwd)) {
 			Toast.makeText(this, getResources().getString(R.string.Password_cannot_be_empty), Toast.LENGTH_SHORT).show();
@@ -86,7 +146,7 @@ public class RegisterActivity extends BaseActivity {
 									pd.dismiss();
 								// 保存用户名
 								DemoApplication.getInstance().setUserName(username);
-								Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), 0).show();
+								Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), Toast.LENGTH_SHORT).show();
 								finish();
 							}
 						});
@@ -118,6 +178,11 @@ public class RegisterActivity extends BaseActivity {
 
 	public void back(View view) {
 		finish();
+	}
+
+	public String getAvatarName() {
+		avatarName= String.valueOf(System.currentTimeMillis());
+		return avatarName;
 	}
 
 }
