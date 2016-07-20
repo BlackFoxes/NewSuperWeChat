@@ -34,6 +34,7 @@ import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.listener.OnSetAvatarListener;
 import cn.ucai.superwechat.utils.FileUtils;
 import cn.ucai.superwechat.utils.OkHttpUtils2;
+import cn.ucai.superwechat.utils.Utils;
 
 import com.easemob.exceptions.EaseMobException;
 
@@ -57,20 +58,13 @@ public class RegisterActivity extends BaseActivity {
 	String nickname;
 	String username;
 	String pwd;
-
-
-
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		initView();
 		setListener();
-
 	}
-
 	private void setListener() {
 		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -90,12 +84,8 @@ public class RegisterActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				setAvatar = new OnSetAvatarListener(RegisterActivity.this, R.id.layout_register, getAvatarName(), I.AVATAR_TYPE_USER_PATH);
-
 			}
 		});
-
-
-
 	}
 
 	@Override
@@ -103,10 +93,8 @@ public class RegisterActivity extends BaseActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode !=RESULT_OK) {
 			return;
-
 		}
 		setAvatar.setAvatar(requestCode,data,mAvatar);
-
 	}
 
 	private void initView() {
@@ -116,8 +104,6 @@ public class RegisterActivity extends BaseActivity {
 		userNameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
-
-
 	}
 
 	/**
@@ -162,15 +148,10 @@ public class RegisterActivity extends BaseActivity {
 			pd.show();
 			Log.i(TAG, "pwd=" + pwd + ",username=" + username + ",nickname=" + nickname);
 			registerLocalServer();
-
-
-
 		}
 	}
-
 	private void registerLocalServer() {
 		File file = new File(OnSetAvatarListener.getAvatarPath(RegisterActivity.this, I.AVATAR_TYPE_USER_PATH),getAvatarName()+I.AVATAR_SUFFIX_JPG);
-
 		OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
 		utils2.setRequestUrl(I.REQUEST_REGISTER)
 				.addParam(I.User.USER_NAME,username)
@@ -188,6 +169,8 @@ public class RegisterActivity extends BaseActivity {
 						} else {
 							pd.dismiss();
 							Log.i(TAG, "cuowu");
+							pd.dismiss();
+							Toast.makeText(getApplicationContext(),R.string.Login_failed+ Utils.getResourceString(RegisterActivity.this,result.getRetCode()),Toast.LENGTH_SHORT).show();
 						}
 
 					}
@@ -195,12 +178,10 @@ public class RegisterActivity extends BaseActivity {
 					@Override
 					public void onError(String error) {
 						pd.dismiss();
-						Log.i(TAG, error.toString());
+						Log.i(TAG, error);
 
 					}
 				});
-
-
 	}
 
 	private void registerEMServer() {
@@ -214,15 +195,16 @@ public class RegisterActivity extends BaseActivity {
                             if (!RegisterActivity.this.isFinishing())
                                 pd.dismiss();
                             // 保存用户名
-                            SuperWeChatApplication.getInstance().setUserName(username);
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    });
+					SuperWeChatApplication.getInstance().setUserName(username);
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), Toast.LENGTH_SHORT).show();
+					finish();
+				}
+			});
                 } catch (final EaseMobException e) {
-                    runOnUiThread(new Runnable() {
+					unRegisterServer();
+					runOnUiThread(new Runnable() {
                         public void run() {
-                            if (!RegisterActivity.this.isFinishing())
+							if (!RegisterActivity.this.isFinishing())
                                 pd.dismiss();
                             int errorCode=e.getErrorCode();
                             if(errorCode== EMError.NONETWORK_ERROR){
@@ -241,6 +223,27 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         }).start();
+	}
+
+	private void unRegisterServer() {
+		final OkHttpUtils2<Result> utils = new OkHttpUtils2<>();
+		utils.setRequestUrl(I.REQUEST_UNREGISTER)
+				.addParam(I.User.USER_NAME,username)
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						Log.e(TAG, "result="+result);
+
+
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.e(TAG, "error="+error);
+
+					}
+				});
 	}
 
 	public void back(View view) {
