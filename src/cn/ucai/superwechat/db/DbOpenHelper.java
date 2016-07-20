@@ -46,7 +46,19 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 			+ UserDao.ROBOT_COLUMN_NAME_ID + " TEXT PRIMARY KEY, "
 			+ UserDao.ROBOT_COLUMN_NAME_NICK + " TEXT, "
 			+ UserDao.ROBOT_COLUMN_NAME_AVATAR + " TEXT);";
-			
+	private static final String SUPERWECHAT_TABLE_CREATE = "CREATE TABLE "
+			+ UserDao.USER_TABLE_NAME + " ("
+			+ UserDao.USER_COLUMN_NAME_ID + " TEXT PRIMARY KEY, "
+			+ UserDao.USER_COLUMN_NAME_NICK + " TEXT, "
+			+ UserDao.USER_COLUMN_ID_AVATAR + " INTEGER, "
+			+ UserDao.USER_COLUMN_PATH_AVATAR + " TEXT, "
+			+ UserDao.USER_COLUMN_LAST_UPDATE_TIME + " TEXT, "
+			+ UserDao.USER_COLUMN_TYPE_AVATAR + " INTEGER);";
+
+
+
+
+
 	private static final String CREATE_PREF_TABLE = "CREATE TABLE "
             + UserDao.PREF_TABLE_NAME + " ("
             + UserDao.COLUMN_NAME_DISABLED_GROUPS + " TEXT, "
@@ -73,6 +85,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 		db.execSQL(INIVTE_MESSAGE_TABLE_CREATE);
 		db.execSQL(CREATE_PREF_TABLE);
 		db.execSQL(ROBOT_TABLE_CREATE);
+		db.execSQL(SUPERWECHAT_TABLE_CREATE);
 		
 	}
 
