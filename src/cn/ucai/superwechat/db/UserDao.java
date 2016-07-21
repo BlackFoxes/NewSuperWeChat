@@ -19,8 +19,10 @@ import java.util.Map;
 import android.content.Context;
 
 
+import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.domain.RobotUser;
 import cn.ucai.superwechat.domain.User;
+import cn.ucai.superwechat.utils.Utils;
 
 public class UserDao {
 	public static final String TABLE_NAME = "uers";
@@ -86,6 +88,10 @@ public class UserDao {
 	 */
 	public void saveContact(User user){
 	    DemoDBManager.getInstance().saveContact(user);
+	}
+
+	public void saveUserAvatar(UserAvatar avatar){
+		DemoDBManager.getInstance().saveAvatar(avatar);
 	}
 	
 	public void setDisabledGroups(List<String> groups){

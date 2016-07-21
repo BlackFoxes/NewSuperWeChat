@@ -42,10 +42,12 @@ import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.User;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.OkHttpUtils2;
+import cn.ucai.superwechat.utils.Utils;
 
 /**
  * 登陆页面
@@ -152,8 +154,8 @@ public class LoginActivity extends BaseActivity {
 					return;
 				}
 				// 登陆成功，保存用户名密码
-				SuperWeChatApplication.getInstance().setUserName(currentUsername);
-				SuperWeChatApplication.getInstance().setPassword(currentPassword);
+
+
 				LoginService();
 
 
@@ -162,7 +164,6 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void onProgress(int progress, String status) {
 			}
-
 			@Override
 			public void onError(final int code, final String message) {
 				if (!progressShow) {
@@ -180,20 +181,28 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void LoginService() {
-		OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
+		OkHttpUtils2<String> utils2 = new OkHttpUtils2<>();
+
 		utils2.setRequestUrl(I.REQUEST_LOGIN)
 				.addParam(I.User.USER_NAME,currentUsername)
 				.addParam(I.User.PASSWORD,currentPassword)
-				.targetClass(Result.class)
-				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
-					public void onSuccess(Result result) {
-						if (result != null&&result.isRetMsg() ) {
-							LoginSuccess();
+					public void onSuccess(String s) {
+						Result result=null;
+						if (s != null) {
+						result = Utils.getResultFromJson(s, UserAvatar.class);
+							if (result != null && result.isRetMsg()) {
+								UserAvatar userAvatar = (UserAvatar) result.getRetData();
+								saveUserToDB(userAvatar);
+								LoginSuccess(userAvatar);
+							}
 
-						} else {
+						}
+						 else {
 							pd.dismiss();
-							Toast.makeText(getApplicationContext(),R.string.Login_failed+result.getRetCode(),Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(),R.string.Login_failed+ Utils.getResourceString(LoginActivity.this,result.getRetCode()),Toast.LENGTH_SHORT).show();
 
 						}
 
@@ -216,7 +225,17 @@ public class LoginActivity extends BaseActivity {
 
 	}
 
-	private void LoginSuccess() {
+	private void saveUserToDB(UserAvatar userAvatar) {
+		if (userAvatar != null) {
+			UserDao userDao = new UserDao(LoginActivity.this);
+			userDao.saveUserAvatar(userAvatar);
+		}
+	}
+
+	private void LoginSuccess(UserAvatar userAvatar) {
+		SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
+		SuperWeChatApplication.getInstance().setUserName(currentUsername);
+		SuperWeChatApplication.getInstance().setPassword(currentPassword);
 		try {
             // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
             // ** manually load all local groups and
