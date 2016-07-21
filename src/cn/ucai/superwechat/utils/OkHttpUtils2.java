@@ -196,7 +196,6 @@ public class OkHttpUtils2<T> {
             }
         });
     }
-
     /**
      * 设置解析的目标类堆笑
      *
@@ -207,7 +206,6 @@ public class OkHttpUtils2<T> {
         mClazz = clazz;
         return this;
     }
-
     /**
      * iso8859-1的文本转换为utf-8的文本
      *
@@ -223,8 +221,6 @@ public class OkHttpUtils2<T> {
         }
         return iso;
     }
-
-
     /**获取服务端根地址
      * @param rootUrl:
      */
@@ -263,7 +259,7 @@ public class OkHttpUtils2<T> {
         return this;
     }
 
-    public OkHttpUtils2<T> addFile(File file) {
+    public OkHttpUtils2<T> addFile2(File file) {
         if (mUrl == null) {
             return this;
         }
@@ -273,6 +269,14 @@ public class OkHttpUtils2<T> {
                 .type(MultipartBuilder.FORM)
                 .addPart(Headers.of("Content-Disposition","form-data; name=\"file\";filename=\""+file.getName()+"\""), fileBody)
                 .build();
+        return this;
+    }
+    public OkHttpUtils2<T> addFile(File file) {
+        if (mUrl == null) {
+            return this;
+        }
+
+        mFileBody = RequestBody.create(null, file);
         return this;
     }
 
