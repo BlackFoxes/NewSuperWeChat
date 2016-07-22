@@ -38,6 +38,7 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.utils.OkHttpUtils2;
+import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
 
 public class AddContactActivity extends BaseActivity{
@@ -108,7 +109,8 @@ public class AddContactActivity extends BaseActivity{
 									UserAvatar userAvatar = (UserAvatar) result.getRetData();
 									if (userAvatar != null) {
 										searchedUserLayout.setVisibility(View.VISIBLE);
-										nameText.setText(toAddUsername);
+										nameText.setText(userAvatar.getMUserNick());
+										UserUtils.setAppUserAvatar(AddContactActivity.this,toAddUsername,avatar);
 										tvNothing.setVisibility(View.GONE);
 									}
 								}else {
