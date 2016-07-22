@@ -96,6 +96,11 @@ public class UserUtils {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
 		}
 	}
+
+	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
+		String userName = SuperWeChatApplication.getInstance().getUserName();
+		setAppUserAvatar(context,userName,imageView);
+	}
     
     /**
      * 设置用户好友列表昵称
