@@ -4,6 +4,7 @@ public interface I {
 
 
 
+
 	interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
 		String USER_NAME 							= 		"m_user_name";					//用户账号
@@ -59,6 +60,7 @@ public interface I {
 		String IS_SEARCHED 							= 		"m_location_is_searched";		//是否可以被搜索到
 		String UPDATE_TIME 							= 		"m_location_last_update_time";	//最后更新时间
 	}
+	String AND 										= 		"&";
 	String MSG_PREFIX_MSG							=		"msg_";
 	String EQL 										= 		"=";
 	String QUESTION 								= 		"?";
