@@ -107,20 +107,19 @@ public class UserUtils {
      */
     public static void setAppUserNick(String username,TextView textView){
     	UserAvatar user = getAppUserInfo(username);
+		setAppUserNickByUserAvatar(user,textView);
+	}
+	public static void setAppUserNickByUserAvatar(UserAvatar user,TextView textView){
 		if (user != null) {
 			if (user.getMUserNick() != null) {
 				textView.setText(user.getMUserNick());
 			} else {
-				textView.setText(username);
+				textView.setText(user.getMUserName());
+
 			}
-
-		} else {
-			textView.setText(username);
-
 
 		}
 	}
-    
     /**
      * 设置当前用户昵称
      */

@@ -217,7 +217,7 @@ public class LoginActivity extends BaseActivity {
 
 					@Override
 					public void onError(String error) {
-						Log.e(TAG, error.toString());
+						Log.e(TAG, "error="+error);
 						pd.dismiss();
 						DemoHXSDKHelper.getInstance().logout(true,null);
 						Toast.makeText(getApplicationContext(), R.string.login_failure_failed, Toast.LENGTH_LONG).show();
