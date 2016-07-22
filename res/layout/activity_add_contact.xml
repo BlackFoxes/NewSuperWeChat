@@ -12,7 +12,6 @@
         android:layout_height="@dimen/height_top_bar"
         android:background="@color/top_bar_normal_bg"
         android:gravity="center_vertical">
-
         <include layout="@layout/commom_back_btn" />
 
         <TextView
@@ -96,5 +95,13 @@
                 android:textSize="14sp" />
         </RelativeLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/tvNothing"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:text="无结果"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
