@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +14,10 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatApplication;
+import cn.ucai.superwechat.bean.UserAvatar;
+import cn.ucai.superwechat.db.UserDao;
+import cn.ucai.superwechat.task.DownloadContactListTask;
 
 /**
  * 开屏页
@@ -21,7 +26,7 @@ import cn.ucai.superwechat.R;
 public class SplashActivity extends BaseActivity {
 	private RelativeLayout rootLayout;
 	private TextView versionText;
-	
+	private static final String TAG = SplashActivity.class.getSimpleName();
 	private static final int sleepTime = 2000;
 
 	@Override
@@ -50,7 +55,17 @@ public class SplashActivity extends BaseActivity {
 					//加上的话保证进了主页面会话和群组都已经load完毕
 					long start = System.currentTimeMillis();
 					EMGroupManager.getInstance().loadAllGroups();
+
 					EMChatManager.getInstance().loadAllConversations();
+					String username = SuperWeChatApplication.getInstance().getUserName();
+					UserDao dao = new UserDao(SplashActivity.this);
+					UserAvatar user=dao.getUserAvatar(username);
+					Log.e(TAG, "user=" + user);
+					SuperWeChatApplication.getInstance().setUserAvatar(user);
+					SuperWeChatApplication.currentUserNick = user.getMUserNick();
+					new DownloadContactListTask(username, SplashActivity.this).execute();
+					Log.e(TAG, "currentUser=" + SuperWeChatApplication.getInstance().getUserName());
+					Log.e(TAG, "currentUser=" + SuperWeChatApplication.getInstance().getUserAvatar());
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {
@@ -75,7 +90,7 @@ public class SplashActivity extends BaseActivity {
 		}).start();
 
 	}
-	
+
 	/**
 	 * 获取当前应用程序的版本号
 	 */
