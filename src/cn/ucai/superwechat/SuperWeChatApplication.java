@@ -18,6 +18,9 @@ import android.content.Context;
 
 import com.easemob.EMCallBack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.ucai.superwechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -86,7 +89,7 @@ public class SuperWeChatApplication extends Application {
 	/**
 	 * 设置用户名
 	 *
-	 * @param user
+	 * @param
 	 */
 	public void setUserName(String username) {
 	    hxSDKHelper.setHXId(username);
@@ -110,6 +113,9 @@ public class SuperWeChatApplication extends Application {
 	    hxSDKHelper.logout(isGCM,emCallBack);
 	}
 
+	/**
+	 * 全局变量中的用户信息
+	 */
 	private UserAvatar userAvatar;
 
 	public UserAvatar getUserAvatar() {
@@ -118,5 +124,18 @@ public class SuperWeChatApplication extends Application {
 
 	public void setUserAvatar(UserAvatar userAvatar) {
 		this.userAvatar = userAvatar;
+	}
+
+	/**
+	 * 全局变量中的好友集合
+	 */
+	private List<UserAvatar> userList;
+
+	public List<UserAvatar> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<UserAvatar> userList) {
+		this.userList = userList;
 	}
 }

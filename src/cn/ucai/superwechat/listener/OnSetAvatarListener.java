@@ -115,9 +115,9 @@ public class OnSetAvatarListener implements View.OnClickListener {
      * @return
      */
     private DisplayMetrics getScreenDisplay(){
-        //创建用于获取屏幕尺寸、像素密度的对象
+        //创建用于获取屏幕尺寸、像素密度的对象像素密度等信息的对象
         Display defaultDisplay  = mActivity.getWindowManager().getDefaultDisplay();
-        //创建用于获取屏幕尺寸、像素密度等信息的对象
+        //创建用于获取屏幕尺寸、
         DisplayMetrics outMetrics = new DisplayMetrics();
         defaultDisplay.getMetrics(outMetrics);
         return outMetrics;

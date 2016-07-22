@@ -45,6 +45,7 @@ import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.User;
+import cn.ucai.superwechat.task.DownloadContactListTask;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.OkHttpUtils2;
 import cn.ucai.superwechat.utils.Utils;
@@ -132,7 +133,7 @@ public class LoginActivity extends BaseActivity {
 		}
 
 		progressShow = true;
-		final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+		pd = new ProgressDialog(LoginActivity.this);
 		pd.setCanceledOnTouchOutside(false);
 		pd.setOnCancelListener(new OnCancelListener() {
 
@@ -195,8 +196,11 @@ public class LoginActivity extends BaseActivity {
 						result = Utils.getResultFromJson(s, UserAvatar.class);
 							if (result != null && result.isRetMsg()) {
 								UserAvatar userAvatar = (UserAvatar) result.getRetData();
-								saveUserToDB(userAvatar);
-								LoginSuccess(userAvatar);
+								if (userAvatar != null) {
+
+									saveUserToDB(userAvatar);
+									LoginSuccess(userAvatar);
+								}
 							}
 
 						}
@@ -226,16 +230,16 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void saveUserToDB(UserAvatar userAvatar) {
-		if (userAvatar != null) {
 			UserDao userDao = new UserDao(LoginActivity.this);
 			userDao.saveUserAvatar(userAvatar);
-		}
 	}
 
 	private void LoginSuccess(UserAvatar userAvatar) {
 		SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
 		SuperWeChatApplication.getInstance().setUserName(currentUsername);
 		SuperWeChatApplication.getInstance().setPassword(currentPassword);
+		SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
 		try {
             // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
             // ** manually load all local groups and
@@ -256,11 +260,19 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 		// 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-		boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
-                SuperWeChatApplication.currentUserNick.trim());
-		if (!updatenick) {
-            Log.e("LoginActivity", "update current user nick fail");
-        }
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
+						SuperWeChatApplication.currentUserNick.trim());
+				if (!updatenick) {
+					Log.e("LoginActivity", "update current user nick fail");
+				}
+
+			}
+		}).start();
+
+
 		if (!LoginActivity.this.isFinishing() && pd.isShowing()) {
             pd.dismiss();
         }
