@@ -44,6 +44,9 @@ import com.easemob.EMEventListener;
 import com.easemob.EMGroupChangeListener;
 import com.easemob.EMNotifierEvent;
 import com.easemob.EMValueCallBack;
+
+import cn.ucai.superwechat.I;
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactListener;
@@ -59,6 +62,8 @@ import com.easemob.chat.TextMessageBody;
 import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.InviteMessage;
@@ -67,6 +72,9 @@ import cn.ucai.superwechat.fragments.ChatAllHistoryFragment;
 import cn.ucai.superwechat.fragments.ContactlistFragment;
 import cn.ucai.superwechat.fragments.SettingsFragment;
 import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.OkHttpUtils2;
+import cn.ucai.superwechat.utils.Utils;
+
 import com.easemob.util.EMLog;
 import com.easemob.util.HanziToPinyin;
 import com.easemob.util.NetUtils;
@@ -516,10 +524,13 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	public class MyContactListener implements EMContactListener {
 
 		@Override
-		public void onContactAdded(List<String> usernameList) {			
+		public void onContactAdded(List<String> usernameList) {
+			Log.e(TAG, "onContactAdded=" + usernameList);
 			// 保存增加的联系人
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
 			Map<String, User> toAddUsers = new HashMap<String, User>();
+			Map<String, UserAvatar> userAvatarMap = SuperWeChatApplication.getInstance().getUserAvatarMap();
+			List<String> toAddUserName = new ArrayList<>();
 			for (String username : usernameList) {
 				User user = setUserHead(username);
 				// 添加好友时可能会回调added方法两次
@@ -527,8 +538,52 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					userDao.saveContact(user);
 				}
 				toAddUsers.put(username, user);
+				if (!userAvatarMap.containsKey(username)) {
+					toAddUserName.add(username);
+				}
 			}
 			localUsers.putAll(toAddUsers);
+			for (String name : toAddUserName) {
+				final OkHttpUtils2<String> utils2 = new OkHttpUtils2<>();
+				utils2.setRequestUrl(I.REQUEST_ADD_CONTACT)
+						.addParam(I.Contact.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+						.addParam(I.Contact.CU_NAME,name)
+						.targetClass(String.class)
+						.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+							@Override
+							public void onSuccess(String s) {
+								Result result=null;
+								if (s != null) {
+									result = Utils.getResultFromJson(s, UserAvatar.class);
+									if (result != null && result.isRetMsg()) {
+										UserAvatar userAvatar = (UserAvatar) result.getRetData();
+										if (userAvatar != null) {
+											if (SuperWeChatApplication.getInstance().getUserAvatarMap().containsKey(userAvatar.getMUserName())) {
+												SuperWeChatApplication.getInstance().getUserAvatarMap().put(userAvatar.getMUserName(), userAvatar);
+												SuperWeChatApplication.getInstance().getUserList().add(userAvatar);
+												sendStickyBroadcast(new Intent("update_contact_list"));
+											}
+
+										}
+									}
+
+								}
+								else {
+
+								}
+
+
+							}
+
+
+
+							@Override
+							public void onError(String error) {
+								Log.e(TAG, "error="+error);
+
+							}
+						});
+			}
 			// 刷新ui
 			if (currentTabIndex == 1)
 				contactListFragment.refresh();
@@ -538,6 +593,8 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		@Override
 		public void onContactDeleted(final List<String> usernameList) {
 			// 被删除
+			Log.e(TAG, "onContactDeleted=" + usernameList);
+
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
 			for (String username : usernameList) {
 				localUsers.remove(username);
@@ -565,7 +622,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 		@Override
 		public void onContactInvited(String username, String reason) {
-			
+			Log.e(TAG, "onContactInvited,username=" + username+",reason="+reason);
+
+
 			// 接到邀请的消息，如果不处理(同意或拒绝)，掉线后，服务器会自动再发过来，所以客户端不需要重复提醒
 			List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
 
@@ -588,6 +647,8 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 		@Override
 		public void onContactAgreed(String username) {
+			Log.e(TAG, "onContactAgreed,username=" + username);
+
 			List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
 			for (InviteMessage inviteMessage : msgs) {
 				if (inviteMessage.getFrom().equals(username)) {
@@ -606,7 +667,8 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 		@Override
 		public void onContactRefused(String username) {
-			
+			Log.e(TAG, "onContactRefused,username=" + username);
+
 			// 参考同意，被邀请实现此功能,demo未实现
 			Log.d(username, username + "拒绝了你的好友请求");
 		}
