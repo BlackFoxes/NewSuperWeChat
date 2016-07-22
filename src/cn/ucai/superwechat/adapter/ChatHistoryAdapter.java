@@ -34,6 +34,8 @@ import com.easemob.chat.EMMessage;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.SmileUtils;
+import cn.ucai.superwechat.utils.UserUtils;
+
 import com.easemob.util.DateUtils;
 
 /**
