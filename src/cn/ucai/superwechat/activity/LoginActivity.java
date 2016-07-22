@@ -235,9 +235,9 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void LoginSuccess(UserAvatar userAvatar) {
-		SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
 		SuperWeChatApplication.getInstance().setUserName(currentUsername);
 		SuperWeChatApplication.getInstance().setPassword(currentPassword);
+		SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
 		SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
 		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
 		try {

@@ -145,6 +145,7 @@ public class OkHttpUtils2<T> {
             mHandler.sendMessage(msg);
             return;
         }
+        Log.e("Utils", "mUrl=" + mUrl);
 
         Request.Builder builder = new Request.Builder().url(mUrl.toString());
 //        Log.e("okhttp","murl="+mUrl);

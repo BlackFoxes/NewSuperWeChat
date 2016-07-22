@@ -93,6 +93,10 @@ public class UserDao {
 	public void saveUserAvatar(UserAvatar avatar){
 		DemoDBManager.getInstance().saveAvatar(avatar);
 	}
+	public UserAvatar getUserAvatar(String username){
+		UserAvatar userAvatar = DemoDBManager.getInstance().getUserAvatar(username);
+		return userAvatar;
+	}
 	
 	public void setDisabledGroups(List<String> groups){
 	    DemoDBManager.getInstance().setDisabledGroups(groups);
