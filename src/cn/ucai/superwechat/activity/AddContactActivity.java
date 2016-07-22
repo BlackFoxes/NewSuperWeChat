@@ -93,6 +93,14 @@ public class AddContactActivity extends BaseActivity{
 				startActivity(new Intent(this,AlertDialog.class).putExtra("msg",str));
 				return;
 			}
+			UserAvatar user = SuperWeChatApplication.getInstance().getUserAvatarMap().get(toAddUsername);
+			if (user != null) {
+				startActivity(new Intent(AddContactActivity.this,UserProfileActivity.class).putExtra("username",toAddUsername));
+
+				return;
+
+			}
+
 			final OkHttpUtils2<String> utils2 = new OkHttpUtils2<>();
 			utils2.setRequestUrl(I.REQUEST_FIND_USER)
 					.addParam(I.User.USER_NAME,toAddUsername)
