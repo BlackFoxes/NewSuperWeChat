@@ -358,7 +358,24 @@ public class DemoDBManager {
             db.replace(UserDao.USER_TABLE_NAME, null, values);
         }
     }
-    
-    
-    
+
+
+    public UserAvatar getUserAvatar(String username) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + UserDao.USER_TABLE_NAME +" where "+ UserDao.USER_COLUMN_NAME_ID +"=?",new String[]{username});
+        UserAvatar user = null;
+        if (cursor.moveToNext()) {
+            user = new UserAvatar();
+            user.setMUserName(username);
+            user.setMUserNick(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_NICK)));
+            user.setMAvatarId(cursor.getInt(cursor.getColumnIndex(UserDao.USER_COLUMN_ID_AVATAR)));
+            user.setMAvatarType(cursor.getInt(cursor.getColumnIndex(UserDao.USER_COLUMN_TYPE_AVATAR)));
+            user.setMAvatarPath(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_PATH_AVATAR)));
+            user.setMAvatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_LAST_UPDATE_TIME)));
+            return user;
+        }
+        return user;
+
+
+    }
 }
