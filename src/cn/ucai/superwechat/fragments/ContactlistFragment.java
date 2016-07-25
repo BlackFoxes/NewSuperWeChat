@@ -51,6 +51,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import cn.ucai.superwechat.I;
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.activity.AddContactActivity;
 import cn.ucai.superwechat.activity.ChatActivity;
 import cn.ucai.superwechat.activity.GroupsActivity;
@@ -65,15 +67,20 @@ import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.adapter.ContactAdapter;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.User;
+import cn.ucai.superwechat.utils.OkHttpUtils2;
 import cn.ucai.superwechat.widget.Sidebar;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
 
 /**
  * 联系人列表页
+ * 问题：不能实现所有的好友长按出现删除和加入黑名单的Item
+ * 菜单
  * 
  */
 public class ContactlistFragment extends Fragment {
@@ -359,7 +366,7 @@ public class ContactlistFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st2 + e.getMessage(), 1).show();
+							Toast.makeText(getActivity(), st2 + e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 
@@ -367,6 +374,28 @@ public class ContactlistFragment extends Fragment {
 
 			}
 		}).start();
+
+		final OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
+		utils2.setRequestUrl(I.REQUEST_DELETE_CONTACT)
+				.addParam(I.Contact.USER_NAME, SuperWeChatApplication.getInstance().getUserName())
+				.addParam(I.Contact.CU_NAME,tobeDeleteUser.getUsername())
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						if (result.isRetMsg()) {
+							UserAvatar userAvatar = SuperWeChatApplication.getInstance().getUserAvatarMap().get(tobeDeleteUser.getUsername());
+							SuperWeChatApplication.getInstance().getUserList().remove(userAvatar);
+							SuperWeChatApplication.getInstance().getUserAvatarMap().remove(tobeDeleteUser.getUsername());
+							((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList().remove(tobeDeleteUser.getUsername());
+							getActivity().sendBroadcast(new Intent("update_contact_list"));
+						}
+					}
+					@Override
+					public void onError(String error) {
+
+					}
+				});
 
 	}
 
@@ -389,7 +418,7 @@ public class ContactlistFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st2, 0).show();
+							Toast.makeText(getActivity(), st2, Toast.LENGTH_SHORT).show();
 							refresh();
 						}
 					});
@@ -398,7 +427,7 @@ public class ContactlistFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(getActivity(), st3, 0).show();
+							Toast.makeText(getActivity(), st3, Toast.LENGTH_SHORT).show();
 						}
 					});
 				}
