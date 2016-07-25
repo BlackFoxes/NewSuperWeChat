@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,11 +14,16 @@ import android.widget.TextView;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.DemoHXSDKHelper;
+import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatApplication;
+import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.task.DownloadContactListTask;
+import cn.ucai.superwechat.utils.OkHttpUtils2;
+import cn.ucai.superwechat.utils.UserUtils;
+import cn.ucai.superwechat.utils.Utils;
 
 /**
  * 开屏页
@@ -62,8 +68,33 @@ public class SplashActivity extends BaseActivity {
 					UserAvatar user=dao.getUserAvatar(username);
 					Log.e(TAG, "user=" + user);
 					SuperWeChatApplication.getInstance().setUserAvatar(user);
-					if (user != null) {
-
+					if (user == null) {
+						final OkHttpUtils2<String> utils2 = new OkHttpUtils2<>();
+						utils2.setRequestUrl(I.REQUEST_FIND_USER)
+								.addParam(I.User.USER_NAME,username)
+								.targetClass(String.class)
+								.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+									@Override
+									public void onSuccess(String s) {
+										Log.e(TAG, "s=" + s);
+										Result result=null;
+										result = Utils.getResultFromJson(s, UserAvatar.class);
+										Log.e(TAG, "result=" + result.toString());
+										if (result != null && result.isRetMsg()) {
+											UserAvatar userAvatar = (UserAvatar) result.getRetData();
+											if (userAvatar != null) {
+												SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
+												SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+											}
+										}
+									}
+									@Override
+									public void onError(String error) {
+										Log.e(TAG, "error="+error);
+									}
+								});
+					}else {
+						SuperWeChatApplication.getInstance().setUserAvatar(user);
 						SuperWeChatApplication.currentUserNick = user.getMUserNick();
 					}
 					new DownloadContactListTask(username, SplashActivity.this).execute();
