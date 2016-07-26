@@ -67,6 +67,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		setContentView(R.layout.activity_user_profile);
 		initView();
 		initListener();
+
 	}
 	
 	private void initView() {
@@ -76,6 +77,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		tvNickName = (TextView) findViewById(R.id.user_nickname);
 		rlNickName = (RelativeLayout) findViewById(R.id.rl_nickname);
 		iconRightArrow = (ImageView) findViewById(R.id.ic_right_arrow);
+		setAvatarName();
+
 	}
 	
 	private void initListener() {
@@ -94,7 +97,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		if (username == null||username.equals(EMChatManager.getInstance().getCurrentUser())) {
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setAppCurrentUserNick(tvNickName);
-			UserUtils.setAppUserAvatar(this,EMChatManager.getInstance().getCurrentUser(), headAvatar);
+			UserUtils.setCurrentUserAvatar(this, headAvatar);
 		} else {
 			tvUsername.setText(username);
 			UserUtils.setAppUserNick(username, tvNickName);
@@ -107,9 +110,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.user_head_avatar:
-			mOnSetAvatarListener = new
+			Log.e(TAG, "avatarName=" + avatarName);
+			mOnSetAvatarListener =new
 					OnSetAvatarListener(UserProfileActivity.this, R.id.layout_parent,
-					SuperWeChatApplication.getInstance().getUserName(), I.AVATAR_TYPE_USER_PATH);
+					avatarName, I.AVATAR_TYPE_USER_PATH);
 //			uploadHeadPhoto();
 
 			break;
@@ -268,7 +272,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 		switch (requestCode) {
 		case REQUESTCODE_PICK:
 			if (data == null || data.getData() == null) {
@@ -293,10 +297,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
 		if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
-			setAvatarName();
 			File file = new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this, I.AVATAR_TYPE_USER_PATH), avatarName + I.AVATAR_SUFFIX_JPG);
 			Log.e(TAG, "REQUEST_CROP_PHOTO");
 			Log.e(TAG, "avatarName=" + avatarName);
+			Log.e(TAG, file.getAbsolutePath());
 			final OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
 			utils2.setRequestUrl(I.REQUEST_UPLOAD_AVATAR)
 					.addParam(I.NAME_OR_HXID,SuperWeChatApplication.getInstance().getUserName())
@@ -307,6 +311,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 						@Override
 						public void onSuccess(Result result) {
 							if (result.isRetMsg()) {
+								setPicToView(data);
 								Log.e(TAG, "result=" + result.toString());
 								Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
 										Toast.LENGTH_SHORT).show();
@@ -367,6 +372,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 					public void run() {
 						dialog.dismiss();
 						if (avatarUrl != null) {
+							Log.e(TAG, "avatarUrl=" + avatarUrl);
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
 									Toast.LENGTH_SHORT).show();
 						} else {

@@ -200,6 +200,7 @@ public class OnSetAvatarListener implements View.OnClickListener {
         }
         ivAvatar.setImageBitmap(avatar);
         File file = FileUtils.getAvatarPath(mActivity,mAvatarType, mUserName + ".jpg");
+        Log.e("OnSetAvatarListener", file.getAbsolutePath());
         if(!file.getParentFile().exists()){
             Toast.makeText(mActivity, "照片保存失败,保存的路径不存在", Toast.LENGTH_LONG).show();
             return ;
