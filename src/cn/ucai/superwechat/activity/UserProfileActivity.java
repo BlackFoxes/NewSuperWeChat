@@ -297,38 +297,42 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
 		if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
-			File file = new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this, I.AVATAR_TYPE_USER_PATH), avatarName + I.AVATAR_SUFFIX_JPG);
 			Log.e(TAG, "REQUEST_CROP_PHOTO");
 			Log.e(TAG, "avatarName=" + avatarName);
-			Log.e(TAG, file.getAbsolutePath());
-			final OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
-			utils2.setRequestUrl(I.REQUEST_UPLOAD_AVATAR)
-					.addParam(I.NAME_OR_HXID,SuperWeChatApplication.getInstance().getUserName())
-					.addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
-					.addFile(file)
-					.targetClass(Result.class)
-					.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
-						@Override
-						public void onSuccess(Result result) {
-							if (result.isRetMsg()) {
-								setPicToView(data);
-								Log.e(TAG, "result=" + result.toString());
-								Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
-										Toast.LENGTH_SHORT).show();
-							}
-						}
-
-						@Override
-						public void onError(String error) {
-							Log.e(TAG, "error=" + error);
-							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_fail),
-									Toast.LENGTH_SHORT).show();
-
-						}
-					});
+			uploadUserAvatar(data);
 
 		}
 
+	}
+
+	private void uploadUserAvatar(final Intent data) {
+		File file = new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this, I.AVATAR_TYPE_USER_PATH), avatarName + I.AVATAR_SUFFIX_JPG);
+		Log.e(TAG, file.getAbsolutePath());
+		final OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
+		utils2.setRequestUrl(I.REQUEST_UPLOAD_AVATAR)
+                .addParam(I.NAME_OR_HXID, SuperWeChatApplication.getInstance().getUserName())
+                .addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+                .addFile(file)
+                .targetClass(Result.class)
+                .execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+                    @Override
+                    public void onSuccess(Result result) {
+                        if (result.isRetMsg()) {
+                            setPicToView(data);
+                            Log.e(TAG, "result=" + result.toString());
+                            Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, "error=" + error);
+                        Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_fail),
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 	}
 
 	public void startPhotoZoom(Uri uri) {

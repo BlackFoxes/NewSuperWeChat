@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
+    android:id="@+id/group_layout"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -72,7 +73,7 @@
         android:paddingTop="5dp"
         android:textSize="18sp" />
     <RelativeLayout
-        android:id="@+id/up_avatar"
+        android:id="@+id/group_avatar"
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:layout_marginBottom="10dp"
