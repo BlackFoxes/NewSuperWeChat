@@ -21,6 +21,7 @@ import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.task.DownloadContactListTask;
+import cn.ucai.superwechat.task.DownloadGroupListTask;
 import cn.ucai.superwechat.utils.OkHttpUtils2;
 import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
@@ -98,6 +99,8 @@ public class SplashActivity extends BaseActivity {
 						SuperWeChatApplication.currentUserNick = user.getMUserNick();
 					}
 					new DownloadContactListTask(username, SplashActivity.this).execute();
+					new DownloadGroupListTask(username, SplashActivity.this).execute();
+
 					Log.e(TAG, "currentUser=" + SuperWeChatApplication.getInstance().getUserName());
 					Log.e(TAG, "currentUser=" + SuperWeChatApplication.getInstance().getUserAvatar());
 					long costTime = System.currentTimeMillis() - start;
