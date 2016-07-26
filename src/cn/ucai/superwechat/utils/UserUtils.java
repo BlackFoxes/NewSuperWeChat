@@ -57,6 +57,16 @@ public class UserUtils {
             Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
         }
     }
+	public static void setAppGroupAvatar(Context context, String hxid, ImageView imageView){
+		String path = "";
+		if(path != null && hxid != null){
+			path = getGroupAvatarPath(hxid);
+			Log.e("UserUtils", "path="+path);
+			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
+		}else{
+			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+		}
+	}
 	public static void setAppUserAvatar(Context context, String username, ImageView imageView){
 		String path = "";
 		if(path != null && username != null){
@@ -67,6 +77,7 @@ public class UserUtils {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
 		}
 	}
+
 
 
 	public static String getUserAvatarPath(String username) {
@@ -84,6 +95,22 @@ public class UserUtils {
 
 
 	}
+	public static String getGroupAvatarPath(String hxid) {
+		StringBuilder path = new StringBuilder(I.SERVER_ROOT);
+		path.append(I.QUESTION).append(I.KEY_REQUEST)
+				.append(I.EQL).append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.AND)
+				.append(I.NAME_OR_HXID).append(I.EQL)
+				.append(hxid)
+				.append(I.AND)
+				.append(I.AVATAR_TYPE)
+				.append(I.EQL)
+				.append(I.AVATAR_TYPE_GROUP_PATH);
+		return path.toString();
+
+
+	}
+
 
 	/**
      * 设置当前用户头像
