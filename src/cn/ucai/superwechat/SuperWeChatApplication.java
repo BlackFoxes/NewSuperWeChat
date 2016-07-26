@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.ucai.superwechat.bean.GroupAvatar;
 import cn.ucai.superwechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -31,7 +32,7 @@ public class SuperWeChatApplication extends Application {
 	private static SuperWeChatApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
-	
+
 	/**
 	 * 当前用户nickname,为了苹果推送不是userid而是昵称
 	 */
@@ -46,17 +47,17 @@ public class SuperWeChatApplication extends Application {
 
         /**
          * this function will initialize the HuanXin SDK
-         * 
+         *
          * @return boolean true if caller can continue to call HuanXin related APIs after calling onInit, otherwise false.
-         * 
+         *
          * 环信初始化SDK帮助函数
          * 返回true如果正确初始化，否则false，如果返回为false，请在后续的调用中不要调用任何和环信相关的代码
-         * 
+         *
          * for example:
          * 例子：
-         * 
+         *
          * public class DemoHXSDKHelper extends HXSDKHelper
-         * 
+         *
          * HXHelper = new DemoHXSDKHelper();
          * if(HXHelper.onInit(context)){
          *     // do HuanXin related work
@@ -68,7 +69,7 @@ public class SuperWeChatApplication extends Application {
 	public static SuperWeChatApplication getInstance() {
 		return instance;
 	}
- 
+
 
 	/**
 	 * 获取当前登陆用户名
@@ -130,6 +131,19 @@ public class SuperWeChatApplication extends Application {
 
 	/**
 	 * 全局变量中的好友集合
+	 */
+	public List<GroupAvatar> grouplist=new ArrayList<>();
+
+	public List<GroupAvatar> getGrouplist() {
+		return grouplist;
+	}
+
+	public void setGrouplist(List<GroupAvatar> userList) {
+		this.grouplist = grouplist;
+	}
+
+	/**
+	 * 全局变量中的群组集合
 	 */
 	private List<UserAvatar> userList=new ArrayList<>();
 
