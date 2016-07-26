@@ -145,7 +145,6 @@ public class OkHttpUtils2<T> {
             mHandler.sendMessage(msg);
             return;
         }
-        Log.e("Utils", "mUrl=" + mUrl);
 
         Request.Builder builder = new Request.Builder().url(mUrl.toString());
 //        Log.e("okhttp","murl="+mUrl);
@@ -197,6 +196,7 @@ public class OkHttpUtils2<T> {
             }
         });
     }
+
     /**
      * 设置解析的目标类堆笑
      *
@@ -276,7 +276,6 @@ public class OkHttpUtils2<T> {
         if (mUrl == null) {
             return this;
         }
-
         mFileBody = RequestBody.create(null, file);
         return this;
     }

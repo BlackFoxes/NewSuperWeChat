@@ -220,7 +220,7 @@ public class DemoDBManager {
      */
     synchronized public void updateMessage(int msgId,ContentValues values){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        if(db.isOpen()){
+            if(db.isOpen()){
             db.update(InviteMessgeDao.TABLE_NAME, values, InviteMessgeDao.COLUMN_NAME_ID + " = ?", new String[]{String.valueOf(msgId)});
         }
     }
@@ -375,6 +375,18 @@ public class DemoDBManager {
             return user;
         }
         return user;
+
+
+    }
+
+    public void updateUserNick(UserAvatar user) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(UserDao.USER_COLUMN_NAME_NICK,user.getMUserNick());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if(db.isOpen()){
+            db.update(UserDao.USER_TABLE_NAME, contentValues, UserDao.USER_COLUMN_NAME_ID + " = ?", new String[]{user.getMUserName()});
+        }
+
 
 
     }

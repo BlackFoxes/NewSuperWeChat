@@ -121,4 +121,10 @@ public class UserDao {
     public void saveRobotUser(List<RobotUser> robotList){
     	DemoDBManager.getInstance().saveRobotList(robotList);
     }
+
+	public void updateNick(UserAvatar user) {
+		DemoDBManager.getInstance().updateUserNick(user);
+
+
+	}
 }

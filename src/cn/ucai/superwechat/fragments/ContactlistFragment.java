@@ -513,7 +513,7 @@ public class ContactlistFragment extends Fragment {
         if(users.get(Constant.GROUP_USERNAME) != null)
             contactList.add(0, users.get(Constant.GROUP_USERNAME));
         
-		// 把"申请与通知"添加到首位
+		// 把"申U请与通知"添加到首位
 		if(users.get(Constant.NEW_FRIENDS_USERNAME) != null)
 		    contactList.add(0, users.get(Constant.NEW_FRIENDS_USERNAME));
 		
