@@ -151,7 +151,7 @@ public class RegisterActivity extends BaseActivity {
 		}
 	}
 	private void registerLocalServer() {
-		File file = new File(OnSetAvatarListener.getAvatarPath(RegisterActivity.this, I.AVATAR_TYPE_USER_PATH),getAvatarName()+I.AVATAR_SUFFIX_JPG);
+		File file = new File(OnSetAvatarListener.getAvatarPath(RegisterActivity.this, I.AVATAR_TYPE_USER_PATH),avatarName+I.AVATAR_SUFFIX_JPG);
 		OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
 		utils2.setRequestUrl(I.REQUEST_REGISTER)
 				.addParam(I.User.USER_NAME,username)
