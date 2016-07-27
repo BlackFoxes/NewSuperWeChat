@@ -22,8 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -95,6 +97,7 @@ import cn.ucai.superwechat.adapter.ExpressionPagerAdapter;
 import cn.ucai.superwechat.adapter.MessageAdapter;
 import cn.ucai.superwechat.adapter.VoicePlayClickListener;
 import cn.ucai.superwechat.domain.RobotUser;
+import cn.ucai.superwechat.task.DownloadGroupMembersTask;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.ImageUtils;
 import cn.ucai.superwechat.utils.SmileUtils;
@@ -421,6 +424,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	            // 显示发送要转发的消息
 	            forwardMessage(forward_msg_id);
 	        }
+			registerReceiver();
 		}
 	}
 
@@ -485,6 +489,25 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
             
         });
 	}
+
+	class MyRecerver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			adapter.notifyDataSetChanged();
+
+		}
+	}
+
+	MyRecerver recerver ;
+
+	private void registerReceiver() {
+		recerver = new MyRecerver();
+		IntentFilter filter = new IntentFilter("update_member_list");
+		registerReceiver(recerver, filter);
+
+
+	}
 	
 	protected void onListViewCreation(){
         adapter = new MessageAdapter(ChatActivity.this, toChatUsername, chatType);
@@ -517,8 +540,10 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         }else{
             ((TextView) findViewById(R.id.name)).setText(toChatUsername);
         }
-        
-        // 监听当前会话的群聊解散被T事件
+		new DownloadGroupMembersTask(toChatUsername, getApplicationContext()).execute();
+
+
+		// 监听当前会话的群聊解散被T事件
         groupListener = new GroupListener();
         EMGroupManager.getInstance().addGroupChangeListener(groupListener);
 	}
@@ -1469,6 +1494,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		activityInstance = null;
 		if(groupListener != null){
 		    EMGroupManager.getInstance().removeGroupChangeListener(groupListener);
+		}
+		if (recerver!=null) {
+			unregisterReceiver(recerver);
 		}
 	}
 
