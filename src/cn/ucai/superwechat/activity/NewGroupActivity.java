@@ -162,8 +162,8 @@ public class NewGroupActivity extends BaseActivity {
                         group=EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(),200);
                     }
 					createAppGroup(groupName, desc, group.getGroupId(), members);
-//					Log.e(TAG, "groupId=" + group.getGroupId());
-					Log.e(TAG, "afterGroupId" + group.getGroupId());
+					Log.e(TAG, "groupId=" + group.getGroupId());
+//					Log.e(TAG, "afterGroupId" + group.getGroupId());
 					runOnUiThread(new Runnable() {
                         public void run() {
                             progressDialog.dismiss();
