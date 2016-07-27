@@ -13,6 +13,7 @@ import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.MemberUserAvatar;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.domain.User;
 import com.squareup.picasso.Picasso;
@@ -193,5 +194,21 @@ public class UserUtils {
 		}
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).saveContact(newUser);
 	}
-    
+
+	/**
+	 * 设置群组成员的昵称
+	 * @param hxid
+	 * @param username
+	 * @param
+     */
+	public static MemberUserAvatar getMemberInfo(String hxid,String username){
+		MemberUserAvatar memberUserAvatar = SuperWeChatApplication.getInstance().getGroupMembers().get(hxid).get(username);
+
+		return memberUserAvatar;
+	}
+
+	public static void setAppMemberNick(String hxid, String username, TextView tvNickName) {
+		MemberUserAvatar memberInfo = getMemberInfo(hxid, username);
+		tvNickName.setText(memberInfo.getMUserNick());
+	}
 }
