@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.superwechat.bean.GroupAvatar;
+import cn.ucai.superwechat.bean.MemberUserAvatar;
 import cn.ucai.superwechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -153,6 +154,35 @@ public class SuperWeChatApplication extends Application {
 
 	public void setUserList(List<UserAvatar> userList) {
 		this.userList = userList;
+	}
+
+	/**
+	 * 全局变量中群组成员的Map集合
+	 */
+	private Map<String, Map<String, MemberUserAvatar>> groupMembers = new HashMap<>();
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		SuperWeChatApplication that = (SuperWeChatApplication) o;
+
+		return groupMembers.equals(that.groupMembers);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return groupMembers.hashCode();
+	}
+
+	public Map<String, Map<String, MemberUserAvatar>> getGroupMembers() {
+		return groupMembers;
+	}
+
+	public void setGroupMembers(Map<String, Map<String, MemberUserAvatar>> groupMembers) {
+		this.groupMembers = groupMembers;
 	}
 
 	/**
