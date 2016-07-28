@@ -40,6 +40,7 @@ import com.easemob.chat.EMCursorResult;
 import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.utils.UserUtils;
 
 import com.easemob.exceptions.EaseMobException;
@@ -65,12 +66,10 @@ public class PublicGroupsActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_public_groups);
-
 		pb = (ProgressBar) findViewById(R.id.progressBar);
 		listView = (ListView) findViewById(R.id.list);
 		groupsList = new ArrayList<EMGroupInfo>();
 		searchBtn = (Button) findViewById(R.id.btn_search);
-		
 		View footView = getLayoutInflater().inflate(R.layout.listview_footer_view, null);
         footLoadingLayout = (LinearLayout) footView.findViewById(R.id.loading_layout);
         footLoadingPB = (ProgressBar)footView.findViewById(R.id.loading_bar);
@@ -133,13 +132,19 @@ public class PublicGroupsActivity extends BaseActivity {
 
                         public void run() {
                             searchBtn.setVisibility(View.VISIBLE);
-                            groupsList.addAll(returnGroups);
-                            if(returnGroups.size() != 0){
-                                //获取cursor
-                                cursor = result.getCursor();
-                                if(returnGroups.size() == pagesize)
-                                    footLoadingLayout.setVisibility(View.VISIBLE);
+                            for (EMGroupInfo g : returnGroups) {
+                                if (!SuperWeChatApplication.getInstance().getGroupAvatarMap().containsKey(g.getGroupId())) {
+                                    groupsList.add(g);
+
+                                }
                             }
+
+                                if (returnGroups.size() != 0) {
+                                    //获取cursor
+                                    cursor = result.getCursor();
+                                    if (returnGroups.size() == pagesize)
+                                        footLoadingLayout.setVisibility(View.VISIBLE);
+                                }
                             if(isFirstLoading){
                                 pb.setVisibility(View.INVISIBLE);
                                 isFirstLoading = false;
