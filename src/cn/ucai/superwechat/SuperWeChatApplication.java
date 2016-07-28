@@ -161,21 +161,7 @@ public class SuperWeChatApplication extends Application {
 	 */
 	private Map<String, Map<String, MemberUserAvatar>> groupMembers = new HashMap<>();
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
 
-		SuperWeChatApplication that = (SuperWeChatApplication) o;
-
-		return groupMembers.equals(that.groupMembers);
-
-	}
-
-	@Override
-	public int hashCode() {
-		return groupMembers.hashCode();
-	}
 
 	public Map<String, Map<String, MemberUserAvatar>> getGroupMembers() {
 		return groupMembers;
