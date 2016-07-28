@@ -37,7 +37,7 @@ public class DownloadGroupListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String result) {
-                        Result fromJson = Utils.getListResultFromJson(result, UserAvatar.class);
+                        Result fromJson = Utils.getListResultFromJson(result, GroupAvatar.class);
                         Log.e(TAG, "result=" + fromJson);
                         List<GroupAvatar>list  = (List<GroupAvatar>) fromJson.getRetData();
                         if (list != null && list.size() > 0) {
