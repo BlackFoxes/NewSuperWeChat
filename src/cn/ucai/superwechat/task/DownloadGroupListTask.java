@@ -29,19 +29,24 @@ public class DownloadGroupListTask {
     }
 
     public void execute() {
+        Log.e(TAG, "execute");
         final OkHttpUtils2<String> utils2 = new OkHttpUtils2<>();
         utils2.setRequestUrl(I.REQUEST_FIND_GROUP_BY_USER_NAME)
-                .addParam(I.Contact.USER_NAME,username)
+                .addParam(I.User.USER_NAME,username)
                 .targetClass(String.class)
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String result) {
                         Result fromJson = Utils.getListResultFromJson(result, UserAvatar.class);
                         Log.e(TAG, "result=" + fromJson);
-                        List<GroupAvatar> list = (List<GroupAvatar>) fromJson.getRetData();
+                        List<GroupAvatar>list  = (List<GroupAvatar>) fromJson.getRetData();
                         if (list != null && list.size() > 0) {
                             Log.e(TAG, "size=" + list.size());
                             SuperWeChatApplication.getInstance().setGrouplist (list);
+                            Map<String, GroupAvatar> groupAvatarMap = SuperWeChatApplication.getInstance().getGroupAvatarMap();
+                            for (GroupAvatar groupAvatar : list) {
+                                groupAvatarMap.put(String.valueOf(groupAvatar.getMGroupHxid()), groupAvatar);
+                            }
                             mContext.sendStickyBroadcast(new Intent("update_group_list"));
                         }
 

@@ -197,4 +197,16 @@ public class SuperWeChatApplication extends Application {
 	public void setUserAvatarMap(Map<String, UserAvatar> userAvatarMap) {
 		this.userAvatarMap = userAvatarMap;
 	}
+	/**
+	 * 全局的当前登录用户的群组的Map集合
+	 */
+	private Map<String, GroupAvatar> groupAvatarMap=new HashMap<>();
+
+	public Map<String, GroupAvatar> getGroupAvatarMap() {
+		return groupAvatarMap;
+	}
+
+	public void setGroupAvatarMap(Map<String, GroupAvatar> groupAvatarMap) {
+		this.groupAvatarMap = groupAvatarMap;
+	}
 }

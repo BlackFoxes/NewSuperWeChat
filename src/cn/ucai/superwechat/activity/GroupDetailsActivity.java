@@ -15,6 +15,7 @@ package cn.ucai.superwechat.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -47,6 +48,7 @@ import com.easemob.chat.EMGroupManager;
 
 import cn.ucai.superwechat.I;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.bean.GroupAvatar;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.task.DownloadGroupMembersTask;
@@ -253,7 +255,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 										((TextView) findViewById(R.id.group_name)).setText(returnData + "(" + group.getAffiliationsCount()
 												+ st);
 										progressDialog.dismiss();
-										Toast.makeText(getApplicationContext(), st6, 0).show();
+										Toast.makeText(getApplicationContext(), st6, Toast.LENGTH_SHORT).show();
 									}
 								});
 								
@@ -262,7 +264,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 								runOnUiThread(new Runnable() {
 									public void run() {
 										progressDialog.dismiss();
-										Toast.makeText(getApplicationContext(), st7, 0).show();
+										Toast.makeText(getApplicationContext(), st7, Toast.LENGTH_SHORT).show();
 									}
 								});
 							}
@@ -281,14 +283,14 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 								public void run() {
 								    refreshMembers();
 									progressDialog.dismiss();
-									Toast.makeText(getApplicationContext(), stsuccess, 0).show();
+									Toast.makeText(getApplicationContext(), stsuccess, Toast.LENGTH_SHORT).show();
 								}
 							});
 						} catch (EaseMobException e) {
 							runOnUiThread(new Runnable() {
 								public void run() {
 									progressDialog.dismiss();
-									Toast.makeText(getApplicationContext(), st9, 0).show();
+									Toast.makeText(getApplicationContext(), st9, Toast.LENGTH_SHORT).show();
 								}
 							});
 						}
@@ -304,11 +306,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 	private void refreshMembers(){
 	    adapter.clear();
-        
         List<String> members = new ArrayList<String>();
         members.addAll(group.getMembers());
         adapter.addAll(members);
-        
         adapter.notifyDataSetChanged();
 	}
 	
@@ -368,12 +368,13 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					runOnUiThread(new Runnable() {
 						public void run() {
 							progressDialog.dismiss();
-							Toast.makeText(getApplicationContext(), getResources().getString(R.string.Exit_the_group_chat_failure) + " " + e.getMessage(), 1).show();
+							Toast.makeText(getApplicationContext(), getResources().getString(R.string.Exit_the_group_chat_failure) + " " + e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 				}
 			}
 		}).start();
+		deleteMembersFromAppGroup(SuperWeChatApplication.getInstance().getUserName(),true);
 	}
 
 	/**
@@ -400,7 +401,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					runOnUiThread(new Runnable() {
 						public void run() {
 							progressDialog.dismiss();
-							Toast.makeText(getApplicationContext(), st5 + e.getMessage(), 1).show();
+							Toast.makeText(getApplicationContext(), st5 + e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 				}
@@ -549,7 +550,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), st7, 1).show();
+                                    Toast.makeText(getApplicationContext(), st7, Toast.LENGTH_LONG).show();
                                 }
                             });
                             
@@ -583,7 +584,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), st9, 1).show();
+                                    Toast.makeText(getApplicationContext(), st9, Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
@@ -737,11 +738,12 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 								return;
 							}
 							if (!NetUtils.hasNetwork(getApplicationContext())) {
-								Toast.makeText(getApplicationContext(), getString(R.string.network_unavailable), 0).show();
+								Toast.makeText(getApplicationContext(), getString(R.string.network_unavailable), Toast.LENGTH_SHORT).show();
 								return;
 							}
 							EMLog.d("group", "remove user from group:" + username);
 							deleteMembersFromGroup(username);
+							deleteMembersFromAppGroup(username,false);
 						} else {
 							// 正常情况下点击user，可以进入用户详情或者聊天页面等等
 							// startActivity(new
@@ -784,13 +786,15 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 									deleteDialog.dismiss();
 									runOnUiThread(new Runnable() {
 										public void run() {
-											Toast.makeText(getApplicationContext(), st14 + e.getMessage(), 1).show();
+											Toast.makeText(getApplicationContext(), st14 + e.getMessage(), Toast.LENGTH_LONG).show();
 										}
 									});
 								}
 
 							}
 						}).start();
+
+
 					}
 				});
 
@@ -818,6 +822,54 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		public int getCount() {
 			return super.getCount() + 2;
 		}
+	}
+
+	private void deleteMembersFromAppGroup(final String username, final boolean isExit) {
+		Log.e(TAG, "deleteMembersFromAppGroup");
+		Map<String, GroupAvatar> groupAvatarMap = SuperWeChatApplication.getInstance().getGroupAvatarMap();
+		Log.e(TAG, "groupAvatarMap =" + groupAvatarMap);
+		GroupAvatar groupAvatar = groupAvatarMap.get(groupId);
+		Log.e(TAG, "groupAvatar =" + groupAvatar);
+
+		if (groupAvatar != null) {
+			final OkHttpUtils2<String> utils2 = new OkHttpUtils2<>();
+			utils2.setRequestUrl(I.REQUEST_DELETE_GROUP_MEMBER)
+					.addParam(I.Member.GROUP_ID, String.valueOf(groupAvatar.getMGroupId()))
+					.addParam(I.Member.USER_NAME,username)
+					.targetClass(String.class)
+					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String result) {
+							Result frmoJson = Utils.getResultFromJson(result, GroupAvatar.class);
+							Log.e(TAG, "frmoJson" + frmoJson);
+							if (frmoJson != null && frmoJson.isRetMsg()) {
+
+								if (isExit) {
+									GroupAvatar groupAvatar=SuperWeChatApplication.getInstance().getGroupAvatarMap().get(groupId);
+									SuperWeChatApplication.getInstance().getGrouplist().remove(groupAvatar);
+									SuperWeChatApplication.getInstance().getGroupAvatarMap().remove(groupId);
+
+
+								} else {
+									SuperWeChatApplication.getInstance().getGroupMembers().get(groupId).remove(username);
+									Log.e(TAG, "deleteMemberAvatar success");
+								}
+							}
+						}
+
+						@Override
+						public void onError(String error) {
+							Log.e(TAG, "error=" + error);
+
+						}
+					});
+
+		} else {
+			finish();
+			return;
+		}
+
+
 	}
 
 	protected void updateGroup() {
