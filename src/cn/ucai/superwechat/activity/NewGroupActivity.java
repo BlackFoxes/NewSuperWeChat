@@ -218,15 +218,11 @@ public class NewGroupActivity extends BaseActivity {
 							GroupAvatar group= (GroupAvatar) result1.getRetData();
 							if (result1 != null && result1.isRetMsg()) {
 								if (members != null && members.length > 0) {
-									addGroupMembers(groupId,members);
+									addGroupMembers(groupId, members,group);
+								} else {
+
+									createGroupSuccess(group);
 								}
-								runOnUiThread(new Runnable() {
-									public void run() {
-										progressDialog.dismiss();
-										setResult(RESULT_OK);
-										finish();
-									}
-								});
 
 							}
 						}
@@ -241,7 +237,7 @@ public class NewGroupActivity extends BaseActivity {
 				});
 	}
 
-	private void addGroupMembers(String groupId, String[] members) {
+	private void addGroupMembers(String groupId, String[] members,final GroupAvatar group) {
 		String memberArr = "";
 		for (String m : members) {
 			memberArr +=m+"," ;
@@ -258,16 +254,10 @@ public class NewGroupActivity extends BaseActivity {
 					public void onSuccess(String result) {
 						if (result != null) {
 							Result result2 = Utils.getResultFromJson(result, GroupAvatar.class);
-							GroupAvatar group= (GroupAvatar) result2.getRetData();
+							GroupAvatar groupAvatar= (GroupAvatar) result2.getRetData();
 							if (result2 != null && result2.isRetMsg()) {
 
-								runOnUiThread(new Runnable() {
-									public void run() {
-										progressDialog.dismiss();
-										setResult(RESULT_OK);
-										finish();
-									}
-								});
+								createGroupSuccess(group);
 
 							} else {
 								progressDialog.dismiss();
@@ -290,6 +280,18 @@ public class NewGroupActivity extends BaseActivity {
 
 
 
+	}
+
+	private void createGroupSuccess(GroupAvatar group) {
+		SuperWeChatApplication.getInstance().getGroupAvatarMap().put(group.getMGroupHxid(), group);
+		SuperWeChatApplication.getInstance().getGrouplist().add(group);
+		runOnUiThread(new Runnable() {
+            public void run() {
+                progressDialog.dismiss();
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
 	}
 
 	public void back(View view) {
