@@ -52,15 +52,14 @@ public class VoicePlayClickListener implements View.OnClickListener {
 	public static VoicePlayClickListener currentPlayListener = null;
 
 	/**
-	 * 
+	 *
 	 * @param message
 	 * @param v
 	 * @param iv_read_status
-	 * @param context
+	 * @param adapter
 	 * @param activity
-	 * @param user
-	 * @param chatType
-	 */
+     * @param username
+     */
 	public VoicePlayClickListener(EMMessage message, ImageView v, ImageView iv_read_status, BaseAdapter adapter, Activity activity,
 			String username) {
 		this.message = message;
@@ -151,6 +150,7 @@ public class VoicePlayClickListener implements View.OnClickListener {
 	}
 
 	// show the voice playing animation
+	@SuppressWarnings("ResourceType")
 	private void showAnimation() {
 		// play voice, and start animation
 		if (message.direct == EMMessage.Direct.RECEIVE) {
