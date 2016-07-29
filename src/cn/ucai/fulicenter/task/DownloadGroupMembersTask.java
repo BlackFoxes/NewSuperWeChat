@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.FuliCenterApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.MemberUserAvatar;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
@@ -49,7 +49,7 @@ public class DownloadGroupMembersTask {
                                 members.put(u.getMUserName(), u);
                             }
                             allMembers.put(hxid, members);
-                            FuliCenterApplication.getInstance().setGroupMembers(allMembers);
+                            FuLiCenterApplication.getInstance().setGroupMembers(allMembers);
                             mContext.sendStickyBroadcast(new Intent("update_member_list"));
                         }
                     }

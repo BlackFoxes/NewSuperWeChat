@@ -52,7 +52,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.FuliCenterApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.AddContactActivity;
 import cn.ucai.fulicenter.activity.ChatActivity;
 import cn.ucai.fulicenter.activity.GroupsActivity;
@@ -375,16 +375,16 @@ public class ContactlistFragment extends Fragment {
 
 		final OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
 		utils2.setRequestUrl(I.REQUEST_DELETE_CONTACT)
-				.addParam(I.Contact.USER_NAME, FuliCenterApplication.getInstance().getUserName())
+				.addParam(I.Contact.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
 				.addParam(I.Contact.CU_NAME,tobeDeleteUser.getUsername())
 				.targetClass(Result.class)
 				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
 					@Override
 					public void onSuccess(Result result) {
 						if (result.isRetMsg()) {
-							UserAvatar userAvatar = FuliCenterApplication.getInstance().getUserAvatarMap().get(tobeDeleteUser.getUsername());
-							FuliCenterApplication.getInstance().getUserList().remove(userAvatar);
-							FuliCenterApplication.getInstance().getUserAvatarMap().remove(tobeDeleteUser.getUsername());
+							UserAvatar userAvatar = FuLiCenterApplication.getInstance().getUserAvatarMap().get(tobeDeleteUser.getUsername());
+							FuLiCenterApplication.getInstance().getUserList().remove(userAvatar);
+							FuLiCenterApplication.getInstance().getUserAvatarMap().remove(tobeDeleteUser.getUsername());
 							((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList().remove(tobeDeleteUser.getUsername());
 							getActivity().sendBroadcast(new Intent("update_contact_list"));
 						}

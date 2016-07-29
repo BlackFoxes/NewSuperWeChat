@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 
-import cn.ucai.fulicenter.FuliCenterApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.BlacklistActivity;
 import cn.ucai.fulicenter.activity.DiagnoseActivity;
 import cn.ucai.fulicenter.activity.LoginActivity;
@@ -365,11 +365,11 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 				getActivity().runOnUiThread(new Runnable() {
 					public void run() {
 						pd.dismiss();
-						FuliCenterApplication.getInstance().getUserList().clear();
-						FuliCenterApplication.getInstance().getGrouplist().clear();
-						FuliCenterApplication.getInstance().getUserAvatarMap().clear();
-						FuliCenterApplication.getInstance().getGroupAvatarMap().clear();
-						FuliCenterApplication.getInstance().getGroupMembers().clear();
+						FuLiCenterApplication.getInstance().getUserList().clear();
+						FuLiCenterApplication.getInstance().getGrouplist().clear();
+						FuLiCenterApplication.getInstance().getUserAvatarMap().clear();
+						FuLiCenterApplication.getInstance().getGroupAvatarMap().clear();
+						FuLiCenterApplication.getInstance().getGroupMembers().clear();
 
 						// 重新显示登陆页面
 						((MainActivity) getActivity()).finish();

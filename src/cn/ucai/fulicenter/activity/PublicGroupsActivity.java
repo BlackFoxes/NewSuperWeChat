@@ -40,7 +40,7 @@ import com.easemob.chat.EMCursorResult;
 import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.FuliCenterApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.utils.UserUtils;
 
 import com.easemob.exceptions.EaseMobException;
@@ -133,7 +133,7 @@ public class PublicGroupsActivity extends BaseActivity {
                         public void run() {
                             searchBtn.setVisibility(View.VISIBLE);
                             for (EMGroupInfo g : returnGroups) {
-                                if (!FuliCenterApplication.getInstance().getGroupAvatarMap().containsKey(g.getGroupId())) {
+                                if (!FuLiCenterApplication.getInstance().getGroupAvatarMap().containsKey(g.getGroupId())) {
                                     groupsList.add(g);
 
                                 }

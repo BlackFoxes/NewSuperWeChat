@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.FuliCenterApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
@@ -41,8 +41,8 @@ public class DownloadGroupListTask {
                         List<GroupAvatar>list  = (List<GroupAvatar>) fromJson.getRetData();
                         if (list != null && list.size() > 0) {
                             Log.e(TAG, "size=" + list.size());
-                            FuliCenterApplication.getInstance().setGrouplist (list);
-                            Map<String, GroupAvatar> groupAvatarMap = FuliCenterApplication.getInstance().getGroupAvatarMap();
+                            FuLiCenterApplication.getInstance().setGrouplist (list);
+                            Map<String, GroupAvatar> groupAvatarMap = FuLiCenterApplication.getInstance().getGroupAvatarMap();
                             for (GroupAvatar groupAvatar : list) {
                                 groupAvatarMap.put(String.valueOf(groupAvatar.getMGroupHxid()), groupAvatar);
                             }

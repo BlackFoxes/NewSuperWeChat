@@ -31,7 +31,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 
 import com.easemob.chat.EMContactManager;
-import cn.ucai.fulicenter.FuliCenterApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
@@ -87,12 +87,12 @@ public class AddContactActivity extends BaseActivity{
 				startActivity(new Intent(this, AlertDialog.class).putExtra("msg", st));
 				return;
 			}
-			if (FuliCenterApplication.getInstance().getUserName().equals(toAddUsername)) {
+			if (FuLiCenterApplication.getInstance().getUserName().equals(toAddUsername)) {
 				String str = getResources().getString(R.string.not_add_myself);
 				startActivity(new Intent(this,AlertDialog.class).putExtra("msg",str));
 				return;
 			}
-			UserAvatar user = FuliCenterApplication.getInstance().getUserAvatarMap().get(toAddUsername);
+			UserAvatar user = FuLiCenterApplication.getInstance().getUserAvatarMap().get(toAddUsername);
 			if (user != null) {
 				startActivity(new Intent(AddContactActivity.this,UserProfileActivity.class).putExtra("username",toAddUsername));
 
@@ -152,7 +152,7 @@ public class AddContactActivity extends BaseActivity{
 	 * @param view
 	 */
 	public void addContact(View view){
-		if(FuliCenterApplication.getInstance().getUserName().equals(nameText.getText().toString())){
+		if(FuLiCenterApplication.getInstance().getUserName().equals(nameText.getText().toString())){
 			String str = getString(R.string.not_add_myself);
 			startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
 			return;

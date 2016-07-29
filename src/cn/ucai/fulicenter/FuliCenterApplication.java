@@ -27,10 +27,11 @@ import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.MemberUserAvatar;
 import cn.ucai.fulicenter.bean.UserAvatar;
 
-public class FuliCenterApplication extends Application {
+public class FuLiCenterApplication extends Application {
 
+	public static final String SERVER_ROOT ="http://10.0.2.2:8080/ FuLiCenterServer/Server" ;
 	public static Context applicationContext;
-	private static FuliCenterApplication instance;
+	private static FuLiCenterApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
 
@@ -67,7 +68,7 @@ public class FuliCenterApplication extends Application {
         hxSDKHelper.onInit(applicationContext);
 	}
 
-	public static FuliCenterApplication getInstance() {
+	public static FuLiCenterApplication getInstance() {
 		return instance;
 	}
 
