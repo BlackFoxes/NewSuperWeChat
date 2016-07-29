@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.activity.BlacklistActivity;
 import cn.ucai.fulicenter.activity.DiagnoseActivity;
 import cn.ucai.fulicenter.activity.LoginActivity;
@@ -365,11 +365,11 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 				getActivity().runOnUiThread(new Runnable() {
 					public void run() {
 						pd.dismiss();
-						SuperWeChatApplication.getInstance().getUserList().clear();
-						SuperWeChatApplication.getInstance().getGrouplist().clear();
-						SuperWeChatApplication.getInstance().getUserAvatarMap().clear();
-						SuperWeChatApplication.getInstance().getGroupAvatarMap().clear();
-						SuperWeChatApplication.getInstance().getGroupMembers().clear();
+						FuliCenterApplication.getInstance().getUserList().clear();
+						FuliCenterApplication.getInstance().getGrouplist().clear();
+						FuliCenterApplication.getInstance().getUserAvatarMap().clear();
+						FuliCenterApplication.getInstance().getGroupAvatarMap().clear();
+						FuliCenterApplication.getInstance().getGroupMembers().clear();
 
 						// 重新显示登陆页面
 						((MainActivity) getActivity()).finish();

@@ -44,7 +44,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import cn.ucai.fulicenter.Constant;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
@@ -93,8 +93,8 @@ public class LoginActivity extends BaseActivity {
 		setListener();
 
 
-		if (SuperWeChatApplication.getInstance().getUserName() != null) {
-			usernameEditText.setText(SuperWeChatApplication.getInstance().getUserName());
+		if (FuliCenterApplication.getInstance().getUserName() != null) {
+			usernameEditText.setText(FuliCenterApplication.getInstance().getUserName());
 		}
 	}
 
@@ -282,10 +282,10 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void LoginSuccess(UserAvatar userAvatar) {
-		SuperWeChatApplication.getInstance().setUserName(currentUsername);
-		SuperWeChatApplication.getInstance().setPassword(currentPassword);
-		SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
-		SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+		FuliCenterApplication.getInstance().setUserName(currentUsername);
+		FuliCenterApplication.getInstance().setPassword(currentPassword);
+		FuliCenterApplication.getInstance().setUserAvatar(userAvatar);
+		FuliCenterApplication.currentUserNick = userAvatar.getMUserNick();
 		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
 		new DownloadGroupListTask(currentUsername,LoginActivity.this).execute();
 
@@ -313,7 +313,7 @@ public class LoginActivity extends BaseActivity {
 			@Override
 			public void run() {
 				boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
-						SuperWeChatApplication.currentUserNick.trim());
+						FuliCenterApplication.currentUserNick.trim());
 				if (!updatenick) {
 					Log.e("LoginActivity", "update current user nick fail");
 				}

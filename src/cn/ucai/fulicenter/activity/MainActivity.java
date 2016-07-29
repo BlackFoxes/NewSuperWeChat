@@ -46,7 +46,7 @@ import com.easemob.EMNotifierEvent;
 import com.easemob.EMValueCallBack;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactListener;
@@ -529,7 +529,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			// 保存增加的联系人
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
 			Map<String, User> toAddUsers = new HashMap<String, User>();
-			Map<String, UserAvatar> userAvatarMap = SuperWeChatApplication.getInstance().getUserAvatarMap();
+			Map<String, UserAvatar> userAvatarMap = FuliCenterApplication.getInstance().getUserAvatarMap();
 			List<String> toAddUserName = new ArrayList<>();
 			for (String username : usernameList) {
 				User user = setUserHead(username);
@@ -546,7 +546,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			for (String name : toAddUserName) {
 				final OkHttpUtils2<String> utils2 = new OkHttpUtils2<>();
 				utils2.setRequestUrl(I.REQUEST_ADD_CONTACT)
-						.addParam(I.Contact.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+						.addParam(I.Contact.USER_NAME, FuliCenterApplication.getInstance().getUserName())
 						.addParam(I.Contact.CU_NAME,name)
 						.targetClass(String.class)
 						.execute(new OkHttpUtils2.OnCompleteListener<String>() {
@@ -557,9 +557,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 									if (result != null && result.isRetMsg()) {
 										UserAvatar userAvatar = (UserAvatar) result.getRetData();
 										if (userAvatar != null) {
-											if (SuperWeChatApplication.getInstance().getUserAvatarMap().containsKey(userAvatar.getMUserName())) {
-												SuperWeChatApplication.getInstance().getUserAvatarMap().put(userAvatar.getMUserName(), userAvatar);
-												SuperWeChatApplication.getInstance().getUserList().add(userAvatar);
+											if (FuliCenterApplication.getInstance().getUserAvatarMap().containsKey(userAvatar.getMUserName())) {
+												FuliCenterApplication.getInstance().getUserAvatarMap().put(userAvatar.getMUserName(), userAvatar);
+												FuliCenterApplication.getInstance().getUserList().add(userAvatar);
 												sendStickyBroadcast(new Intent("update_contact_list"));
 											}
 										}
@@ -591,16 +591,16 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 				Log.e(TAG, "username=" + username);
 				final OkHttpUtils2<Result> utils2 = new OkHttpUtils2<>();
 				utils2.setRequestUrl(I.REQUEST_DELETE_CONTACT)
-						.addParam(I.Contact.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+						.addParam(I.Contact.USER_NAME, FuliCenterApplication.getInstance().getUserName())
 						.addParam(I.Contact.CU_NAME,username)
 						.targetClass(Result.class)
 						.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
 							@Override
 							public void onSuccess(Result result) {
 								if (result.isRetMsg()) {
-									UserAvatar userAvatar = SuperWeChatApplication.getInstance().getUserAvatarMap().get(username);
-									SuperWeChatApplication.getInstance().getUserList().remove(userAvatar);
-									SuperWeChatApplication.getInstance().getUserAvatarMap().remove(username);
+									UserAvatar userAvatar = FuliCenterApplication.getInstance().getUserAvatarMap().get(username);
+									FuliCenterApplication.getInstance().getUserList().remove(userAvatar);
+									FuliCenterApplication.getInstance().getUserAvatarMap().remove(username);
 									userDao.deleteContact(username);
 									((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList().remove(username);
 									inviteMessgeDao.deleteMessage(username);

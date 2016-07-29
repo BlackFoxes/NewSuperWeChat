@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cn.ucai.fulicenter.I;
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuliCenterApplication;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
@@ -40,9 +40,9 @@ public class UserUtils {
         return user;
     }
 	public static UserAvatar getAppUserInfo(String username){
-		UserAvatar user = SuperWeChatApplication.getInstance().getUserAvatarMap().get(username);
+		UserAvatar user = FuliCenterApplication.getInstance().getUserAvatarMap().get(username);
 		Log.e(TAG, "getAppUserInfo,user=" + user);
-		if(SuperWeChatApplication.getInstance().getUserAvatarMap().get(username) == null){
+		if(FuliCenterApplication.getInstance().getUserAvatarMap().get(username) == null){
 			user = new UserAvatar();
 		}
 
@@ -129,7 +129,7 @@ public class UserUtils {
 	}
 
 	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
-		String userName = SuperWeChatApplication.getInstance().getUserName();
+		String userName = FuliCenterApplication.getInstance().getUserName();
 		setAppUserAvatar(context,userName,imageView);
 	}
     
@@ -165,7 +165,7 @@ public class UserUtils {
     	}
     }
 	public static void setAppCurrentUserNick(TextView textView){
-		UserAvatar user = SuperWeChatApplication.getInstance().getUserAvatar();
+		UserAvatar user = FuliCenterApplication.getInstance().getUserAvatar();
 		if (textView != null && user != null) {
 			if (user.getMUserNick() != null) {
 
@@ -209,7 +209,7 @@ public class UserUtils {
 	 * @param
      */
 	public static MemberUserAvatar getMemberInfo(String hxid,String username){
-		Map<String, Map<String, MemberUserAvatar>> groupMembers = SuperWeChatApplication.getInstance().getGroupMembers();
+		Map<String, Map<String, MemberUserAvatar>> groupMembers = FuliCenterApplication.getInstance().getGroupMembers();
 		MemberUserAvatar memberUserAvatar = null;
 		if (groupMembers != null) {
 			 memberUserAvatar =groupMembers.get(hxid).get(username);
