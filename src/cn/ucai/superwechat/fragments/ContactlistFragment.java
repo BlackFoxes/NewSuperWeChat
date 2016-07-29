@@ -117,7 +117,7 @@ public class ContactlistFragment extends Fragment {
                                 refresh();
 		                    }else{
 		                        String s1 = getResources().getString(R.string.get_failed_please_check);
-		                        Toast.makeText(getActivity(), s1, 1).show();
+		                        Toast.makeText(getActivity(), s1, Toast.LENGTH_LONG).show();
 		                        progressBar.setVisibility(View.GONE);
 		                    }
 		                }
@@ -290,7 +290,7 @@ public class ContactlistFragment extends Fragment {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		if (((AdapterContextMenuInfo) menuInfo).position > 3) {
+		if (((AdapterContextMenuInfo) menuInfo).position > 1) {
 		    toBeProcessUser = adapter.getItem(((AdapterContextMenuInfo) menuInfo).position);
 		    toBeProcessUsername = toBeProcessUser.getUsername();
 			getActivity().getMenuInflater().inflate(R.menu.context_contact_list, menu);

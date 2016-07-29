@@ -553,7 +553,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 							@Override
 							public void onSuccess(String s) {
 								Result result=null;
-								if (s != null) {
 									result = Utils.getResultFromJson(s, UserAvatar.class);
 									if (result != null && result.isRetMsg()) {
 										UserAvatar userAvatar = (UserAvatar) result.getRetData();
@@ -563,17 +562,12 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 												SuperWeChatApplication.getInstance().getUserList().add(userAvatar);
 												sendStickyBroadcast(new Intent("update_contact_list"));
 											}
-
 										}
 									}
-
-								}
-								else {
-
 								}
 
 
-							}
+
 
 
 

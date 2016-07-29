@@ -18,8 +18,12 @@ import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.domain.User;
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
 public class UserUtils {
-    /**
+	private static final String TAG = UserUtils.class.getSimpleName();
+
+	/**
      * 根据username获取相应user，由于demo没有真实的用户数据，这里给的模拟的数据；
      * @param username
      * @return
@@ -39,6 +43,7 @@ public class UserUtils {
     }
 	public static UserAvatar getAppUserInfo(String username){
 		UserAvatar user = SuperWeChatApplication.getInstance().getUserAvatarMap().get(username);
+		Log.e(TAG, "getAppUserInfo,user=" + user);
 		if(SuperWeChatApplication.getInstance().getUserAvatarMap().get(username) == null){
 			user = new UserAvatar();
 		}
@@ -134,8 +139,14 @@ public class UserUtils {
      * 设置用户好友列表昵称
      */
     public static void setAppUserNick(String username,TextView textView){
-    	UserAvatar user = getAppUserInfo(username);
-		setAppUserNickByUserAvatar(user,textView);
+		Log.e(TAG, "setAppUserNick,username=" + username);
+		UserAvatar user = getAppUserInfo(username);
+		if (user.getMUserNick() != null) {
+			setAppUserNickByUserAvatar(user, textView);
+		} else {
+
+			textView.setText(username);
+		}
 	}
 	public static void setAppUserNickByUserAvatar(UserAvatar user,TextView textView){
 		if (user != null) {
@@ -143,9 +154,7 @@ public class UserUtils {
 				textView.setText(user.getMUserNick());
 			} else {
 				textView.setText(user.getMUserName());
-
 			}
-
 		}
 	}
     /**
@@ -202,8 +211,11 @@ public class UserUtils {
 	 * @param
      */
 	public static MemberUserAvatar getMemberInfo(String hxid,String username){
-		MemberUserAvatar memberUserAvatar = SuperWeChatApplication.getInstance().getGroupMembers().get(hxid).get(username);
-
+		Map<String, Map<String, MemberUserAvatar>> groupMembers = SuperWeChatApplication.getInstance().getGroupMembers();
+		MemberUserAvatar memberUserAvatar = null;
+		if (groupMembers != null) {
+			 memberUserAvatar =groupMembers.get(hxid).get(username);
+		}
 		return memberUserAvatar;
 	}
 
