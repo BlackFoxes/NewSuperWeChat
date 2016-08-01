@@ -227,7 +227,7 @@ public interface I {
 	String AND 										= 		"&";
 	String EQL 										= 		"=";
 	String QUESTION 								= 		"?";
-	String SERVER_ROOT 								= 		"http://10.0.2.2:8080/SuperWeChatServer/Server";
+	String SERVER_ROOT 								= 		"http://10.0.2.2:8080/FuLiCenterServer/Server";
 	//	String AVATAR_PATH 								= 		"E:/test/";
 	public enum ActionType {
         ACTION_DOWNLOAD, ACTION_PULL_DOWN, ACTION_SCROLL

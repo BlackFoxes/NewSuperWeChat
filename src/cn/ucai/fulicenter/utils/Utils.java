@@ -80,9 +80,18 @@ public class Utils {
         Result result = new Result();
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
-            result.setRetCode(jsonObject.getInt("retCode"));
-            result.setRetMsg(jsonObject.getBoolean("retMsg"));
-            if(!jsonObject.isNull("retData")) {
+            if (!jsonObject.isNull("retCode")) {
+                result.setRetCode(jsonObject.getInt("retCode"));
+            } else if (jsonObject.isNull("retCode")) {
+
+                result.setRetCode(jsonObject.getInt("msg"));
+            }
+            if (!jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("retMsg"));
+            } else if (jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("result"));
+            }
+            if (!jsonObject.isNull("retData")) {
                 JSONObject jsonRetData = jsonObject.getJSONObject("retData");
                 if (jsonRetData != null) {
                     Log.e("Utils", "jsonRetData=" + jsonRetData);
@@ -101,6 +110,27 @@ public class Utils {
                         return result;
                     }
                 }
+            } else if (jsonObject.isNull("retData")){
+                JSONObject jsonRetData = new JSONObject(jsonStr);
+                if (jsonRetData != null) {
+                    Log.e("Utils", "jsonRetData=" + jsonRetData);
+                    String date;
+                    try {
+                        date = URLDecoder.decode(jsonRetData.toString(), I.UTF_8);
+                        Log.e("Utils", "jsonRetData=" + date);
+                        T t = new Gson().fromJson(date, clazz);
+                        result.setRetData(t);
+                        return result;
+
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                        T t = new Gson().fromJson(jsonRetData.toString(), clazz);
+                        result.setRetData(t);
+                        return result;
+                    }
+                }
+
+
             }
             return result;
         }catch (Exception e){
@@ -113,8 +143,17 @@ public class Utils {
         Log.e("Utils","jsonStr="+jsonStr);
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
-            result.setRetCode(jsonObject.getInt("retCode"));
-            result.setRetMsg(jsonObject.getBoolean("retMsg"));
+            if (!jsonObject.isNull("retCode")) {
+                result.setRetCode(jsonObject.getInt("retCode"));
+            } else if (jsonObject.isNull("retCode")) {
+
+                result.setRetCode(jsonObject.getInt("msg"));
+            }
+            if (!jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("retMsg"));
+            } else if (jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("result"));
+            }
             if(!jsonObject.isNull("retData")) {
                 JSONArray array = jsonObject.getJSONArray("retData");
                 if (array != null) {
@@ -127,6 +166,27 @@ public class Utils {
                     result.setRetData(list);
                     return result;
                 }
+            } else if (jsonObject.isNull("retData")){
+                JSONObject jsonRetData = new JSONObject(jsonStr);
+                if (jsonRetData != null) {
+                    Log.e("Utils", "jsonRetData=" + jsonRetData);
+                    String date;
+                    try {
+                        date = URLDecoder.decode(jsonRetData.toString(), I.UTF_8);
+                        Log.e("Utils", "jsonRetData=" + date);
+                        T t = new Gson().fromJson(date, clazz);
+                        result.setRetData(t);
+                        return result;
+
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                        T t = new Gson().fromJson(jsonRetData.toString(), clazz);
+                        result.setRetData(t);
+                        return result;
+                    }
+                }
+
+
             }
             return result;
         }catch (Exception e){
@@ -139,8 +199,17 @@ public class Utils {
         Result result = new Result();
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
-            result.setRetCode(jsonObject.getInt("retCode"));
-            result.setRetMsg(jsonObject.getBoolean("retMsg"));
+            if (!jsonObject.isNull("retCode")) {
+                result.setRetCode(jsonObject.getInt("retCode"));
+            } else if (jsonObject.isNull("retCode")) {
+
+                result.setRetCode(jsonObject.getInt("msg"));
+            }
+            if (!jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("retMsg"));
+            } else if (jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("result"));
+            }
             if(!jsonObject.isNull("retData")) {
                 JSONObject jsonPager = jsonObject.getJSONObject("retData");
                 if (jsonPager != null) {
@@ -158,6 +227,27 @@ public class Utils {
                     result.setRetData(pager);
                     return result;
                 }
+            } else if (jsonObject.isNull("retData")){
+                JSONObject jsonRetData = new JSONObject(jsonStr);
+                if (jsonRetData != null) {
+                    Log.e("Utils", "jsonRetData=" + jsonRetData);
+                    String date;
+                    try {
+                        date = URLDecoder.decode(jsonRetData.toString(), I.UTF_8);
+                        Log.e("Utils", "jsonRetData=" + date);
+                        T t = new Gson().fromJson(date, clazz);
+                        result.setRetData(t);
+                        return result;
+
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                        T t = new Gson().fromJson(jsonRetData.toString(), clazz);
+                        result.setRetData(t);
+                        return result;
+                    }
+                }
+
+
             }
             return result;
         }catch (Exception e){
