@@ -79,8 +79,9 @@ public class SplashActivity extends BaseActivity {
 										Result result=null;
 										result = Utils.getResultFromJson(s, UserAvatar.class);
 										Log.e(TAG, "result=" + result.toString());
-										if (result != null && result.isRetMsg()) {
+										if (result != null &&!result.isRetMsg()) {
 											UserAvatar userAvatar = (UserAvatar) result.getRetData();
+											Log.e(TAG, "userAvatar=" + userAvatar);
 											if (userAvatar != null) {
 												FuLiCenterApplication.getInstance().setUserAvatar(userAvatar);
 												FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
@@ -111,14 +112,14 @@ public class SplashActivity extends BaseActivity {
 						}
 					}
 					//进入主页面
-					startActivity(new Intent(SplashActivity.this, MainActivity.class));
+					startActivity(new Intent(SplashActivity.this, FuLiCenterMainActivity.class));
 					finish();
 				}else {
 					try {
 						Thread.sleep(sleepTime);
 					} catch (InterruptedException e) {
 					}
-					startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+					startActivity(new Intent(SplashActivity.this, FuLiCenterMainActivity.class));
 					finish();
 				}
 			}
