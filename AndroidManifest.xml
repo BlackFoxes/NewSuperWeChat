@@ -67,9 +67,17 @@
         <activity
             android:name="cn.ucai.fulicenter.activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" 
+            android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible">
         </activity>
+        <!-- 福利社Activity-->
+        <activity
+            android:name="cn.ucai.fulicenter.activity.FuLiCenterMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize|stateVisible">
+        </activity>
+
 
         <!-- 注册 -->
         <activity
@@ -334,7 +342,7 @@
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="7676#newsuperwechat" />
+            android:value="7676#fulicenter" />
         <!-- 声明sdk所需的service -->
         <service android:name="com.easemob.chat.EMChatService"/>
         <!-- 声明sdk所需的receiver -->

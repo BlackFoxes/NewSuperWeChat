@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/list_background"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpAdapter"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:background="@color/bottom_bar_taobao_bg"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <RadioGroup
+            android:layout_weight="3"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/rb_new_goods"
+                style="@style/menu_item_style"
+                android:text="新品"
+                android:button="@null"
+                android:checked="false"
+                android:textColor="@color/main_botton_text_color"
+                android:drawableTop="@drawable/selector_menu_item_new_good"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_boutique"
+                style="@style/menu_item_style"
+                android:text="精品"
+                android:button="@null"
+                android:checked="false"
+                android:textColor="@color/main_botton_text_color"
+                android:drawableTop="@drawable/selector_menu_item_boutique"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_category"
+                style="@style/menu_item_style"
+                android:text="分类"
+                android:button="@null"
+                android:checked="false"
+                android:textColor="@color/main_botton_text_color"
+                android:drawableTop="@drawable/selector_menu_item_category"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+        <RelativeLayout
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rbCart"
+                style="@style/menu_item_style"
+                android:text="购物车"
+                android:button="@null"
+                android:checked="false"
+                android:textColor="@color/main_botton_text_color"
+                android:drawableTop="@drawable/selector_menu_item_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/cart_hint"
+                android:layout_toRightOf="@+id/rbCart"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/cart_hint"
+                android:text="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <RadioButton
+            android:id="@+id/rb_personal"
+            android:layout_weight="1"
+            style="@style/menu_item_style"
+            android:text="我"
+            android:button="@null"
+            android:checked="false"
+            android:textColor="@color/main_botton_text_color"
+            android:drawableTop="@drawable/selector_menu_item_personal_center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
