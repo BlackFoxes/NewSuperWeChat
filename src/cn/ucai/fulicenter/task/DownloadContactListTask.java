@@ -36,20 +36,26 @@ public class DownloadContactListTask {
                     @Override
                     public void onSuccess(String result) {
                         Log.e(TAG, "result=" + result);
-                        Result fromJson = Utils.getListResultFromJson(result, UserAvatar.class);
-                        Log.e(TAG, "fromJson=" + fromJson);
-                        List<UserAvatar> list = (List<UserAvatar>) fromJson.getRetData();
-                        if (list != null && list.size() > 0) {
-                            Log.e(TAG, "size=" + list.size());
-                            FuLiCenterApplication.getInstance().setUserList (list);
-                            Map<String, UserAvatar> userAvatarMap = FuLiCenterApplication.getInstance().getUserAvatarMap();
-                            for (UserAvatar u:list) {
-                                userAvatarMap.put(u.getMUserName(), u);
+                        if (result != null) {
 
+                            Result fromJson = Utils.getListResultFromJson(result, UserAvatar.class);
+                            Log.e(TAG, "fromJson=" + fromJson);
+                            if (fromJson != null) {
+
+                                List<UserAvatar> list = (List<UserAvatar>) fromJson.getRetData();
+                                if (list != null && list.size() > 0) {
+                                    Log.e(TAG, "size=" + list.size());
+                                    FuLiCenterApplication.getInstance().setUserList (list);
+                                    Map<String, UserAvatar> userAvatarMap = FuLiCenterApplication.getInstance().getUserAvatarMap();
+                                    for (UserAvatar u:list) {
+                                        userAvatarMap.put(u.getMUserName(), u);
+
+                                    }
+                                    mContext.sendStickyBroadcast(new Intent("update_contact_list"));
+
+
+                                }
                             }
-                            mContext.sendStickyBroadcast(new Intent("update_contact_list"));
-
-
                         }
 
                     }
