@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.MemberUserAvatar;
 import cn.ucai.fulicenter.bean.UserAvatar;
 
@@ -134,15 +133,7 @@ public class FuLiCenterApplication extends Application {
 	/**
 	 * 全局变量中的好友集合
 	 */
-	public List<GroupAvatar> grouplist=new ArrayList<>();
 
-	public List<GroupAvatar> getGrouplist() {
-		return grouplist;
-	}
-
-	public void setGrouplist(List<GroupAvatar> userList) {
-		this.grouplist = grouplist;
-	}
 
 	/**
 	 * 全局变量中的群组集合
@@ -187,13 +178,5 @@ public class FuLiCenterApplication extends Application {
 	/**
 	 * 全局的当前登录用户的群组的Map集合
 	 */
-	private Map<String, GroupAvatar> groupAvatarMap=new HashMap<>();
 
-	public Map<String, GroupAvatar> getGroupAvatarMap() {
-		return groupAvatarMap;
-	}
-
-	public void setGroupAvatarMap(Map<String, GroupAvatar> groupAvatarMap) {
-		this.groupAvatarMap = groupAvatarMap;
-	}
 }

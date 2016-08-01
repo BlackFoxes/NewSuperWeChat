@@ -366,9 +366,9 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 					public void run() {
 						pd.dismiss();
 						FuLiCenterApplication.getInstance().getUserList().clear();
-						FuLiCenterApplication.getInstance().getGrouplist().clear();
+//						FuLiCenterApplication.getInstance().getGrouplist().clear();
 						FuLiCenterApplication.getInstance().getUserAvatarMap().clear();
-						FuLiCenterApplication.getInstance().getGroupAvatarMap().clear();
+//						FuLiCenterApplication.getInstance().getGroupAvatarMap().clear();
 						FuLiCenterApplication.getInstance().getGroupMembers().clear();
 
 						// 重新显示登陆页面

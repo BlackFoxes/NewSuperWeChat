@@ -35,8 +35,9 @@ public class DownloadContactListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String result) {
+                        Log.e(TAG, "result=" + result);
                         Result fromJson = Utils.getListResultFromJson(result, UserAvatar.class);
-                        Log.e(TAG, "result=" + fromJson);
+                        Log.e(TAG, "fromJson=" + fromJson);
                         List<UserAvatar> list = (List<UserAvatar>) fromJson.getRetData();
                         if (list != null && list.size() > 0) {
                             Log.e(TAG, "size=" + list.size());

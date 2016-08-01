@@ -36,12 +36,10 @@ import com.easemob.chat.EMGroupManager;
 
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.InviteMessage;
-import cn.ucai.fulicenter.task.DownloadGroupMembersTask;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
@@ -202,7 +200,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 					} else{
 						//同意加群申请
 						EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
-						addToGroup(msg.getFrom(), msg.getGroupId());
+//						addToGroup(msg.getFrom(), msg.getGroupId());
 					}
 					((Activity) context).runOnUiThread(new Runnable() {
 
@@ -244,11 +242,11 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
 					public void onSuccess(String s) {
-						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
-						if (result != null && result.isRetMsg()) {
-							new DownloadGroupMembersTask(hxid,context).execute();
-
-						}
+//						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+//						if (result != null && result.isRetMsg()) {
+//							new DownloadGroupMembersTask(hxid,context).execute();
+//
+//						}
 
 
 					}

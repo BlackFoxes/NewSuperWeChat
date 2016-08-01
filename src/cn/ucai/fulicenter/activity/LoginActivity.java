@@ -52,7 +52,6 @@ import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.User;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
-import cn.ucai.fulicenter.task.DownloadGroupListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.UserUtils;
@@ -159,6 +158,7 @@ public class LoginActivity extends BaseActivity {
 
 			@Override
 			public void onSuccess() {
+				Log.e(TAG, "Login onSuccess");
 				if (!progressShow) {
 					return;
 				}
@@ -178,6 +178,7 @@ public class LoginActivity extends BaseActivity {
 				if (!progressShow) {
 					return;
 				}
+				Log.e(TAG, "message=" + message);
 				runOnUiThread(new Runnable() {
 					public void run() {
 						pd.dismiss();
@@ -199,14 +200,16 @@ public class LoginActivity extends BaseActivity {
 				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
 					public void onSuccess(String s) {
+						Log.e(TAG, "LoginService,s=" + s);
 						Result result=null;
 						if (s != null) {
 						result = Utils.getResultFromJson(s, UserAvatar.class);
+							Log.e(TAG, "result=" + result);
 							if (result != null && result.isRetMsg()) {
 								UserAvatar userAvatar = (UserAvatar) result.getRetData();
+								Log.e(TAG, "userAvatar=" + userAvatar);
 								if (userAvatar != null) {
 									downloadUserAvatar();
-
 									saveUserToDB(userAvatar);
 									LoginSuccess(userAvatar);
 								}
@@ -287,7 +290,6 @@ public class LoginActivity extends BaseActivity {
 		FuLiCenterApplication.getInstance().setUserAvatar(userAvatar);
 		FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
-		new DownloadGroupListTask(currentUsername,LoginActivity.this).execute();
 
 		try {
             // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话

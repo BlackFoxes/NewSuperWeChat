@@ -55,7 +55,6 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.activity.AddContactActivity;
 import cn.ucai.fulicenter.activity.ChatActivity;
-import cn.ucai.fulicenter.activity.GroupsActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.activity.NewFriendsMsgActivity;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
@@ -228,7 +227,7 @@ public class ContactlistFragment extends Fragment {
 					startActivity(new Intent(getActivity(), NewFriendsMsgActivity.class));
 				} else if (Constant.GROUP_USERNAME.equals(username)) {
 					// 进入群聊列表页面
-					startActivity(new Intent(getActivity(), GroupsActivity.class));
+//					startActivity(new Intent(getActivity(), GroupsActivity.class));
 //				} else if(Constant.CHAT_ROOM.equals(username)){
 //					//进入聊天室列表页面
 //				    startActivity(new Intent(getActivity(), PublicChatRoomsActivity.class));
@@ -508,8 +507,8 @@ public class ContactlistFragment extends Fragment {
 		// 加入"群聊"和"聊天室"
 //        if(users.get(Constant.CHAT_ROOM) != null)
 //            contactList.add(0, users.get(Constant.CHAT_ROOM));
-        if(users.get(Constant.GROUP_USERNAME) != null)
-            contactList.add(0, users.get(Constant.GROUP_USERNAME));
+//        if(users.get(Constant.GROUP_USERNAME) != null)
+//            contactList.add(0, users.get(Constant.GROUP_USERNAME));
         
 		// 把"申U请与通知"添加到首位
 		if(users.get(Constant.NEW_FRIENDS_USERNAME) != null)

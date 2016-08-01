@@ -20,7 +20,6 @@ import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
-import cn.ucai.fulicenter.task.DownloadGroupListTask;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -63,6 +62,7 @@ public class SplashActivity extends BaseActivity {
 
 					EMChatManager.getInstance().loadAllConversations();
 					String username = FuLiCenterApplication.getInstance().getUserName();
+					Log.e(TAG, "username=" + username);
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar user=dao.getUserAvatar(username);
 					Log.e(TAG, "user=" + user);
@@ -96,8 +96,8 @@ public class SplashActivity extends BaseActivity {
 						FuLiCenterApplication.getInstance().setUserAvatar(user);
 						FuLiCenterApplication.currentUserNick = user.getMUserNick();
 					}
+					Log.e(TAG, "DownloadContactListTask,username=" + username);
 					new DownloadContactListTask(username, SplashActivity.this).execute();
-					new DownloadGroupListTask(username, SplashActivity.this).execute();
 
 					Log.e(TAG, "currentUser=" + FuLiCenterApplication.getInstance().getUserName());
 					Log.e(TAG, "currentUser=" + FuLiCenterApplication.getInstance().getUserAvatar());

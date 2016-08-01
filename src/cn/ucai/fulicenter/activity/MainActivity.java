@@ -181,30 +181,30 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 
 	
-	static void asyncFetchGroupsFromServer(){
-	    HXSDKHelper.getInstance().asyncFetchGroupsFromServer(new EMCallBack(){
-
-            @Override
-            public void onSuccess() {
-                HXSDKHelper.getInstance().noitifyGroupSyncListeners(true);
-                
-                if(HXSDKHelper.getInstance().isContactsSyncedWithServer()){
-                    HXSDKHelper.getInstance().notifyForRecevingEvents();
-                }
-            }
-
-            @Override
-            public void onError(int code, String message) {
-                HXSDKHelper.getInstance().noitifyGroupSyncListeners(false);                
-            }
-
-            @Override
-            public void onProgress(int progress, String status) {
-                
-            }
-            
-        });
-	}
+//	static void asyncFetchGroupsFromServer(){
+//	    HXSDKHelper.getInstance().asyncFetchGroupsFromServer(new EMCallBack(){
+//
+//            @Override
+//            public void onSuccess() {
+//                HXSDKHelper.getInstance().noitifyGroupSyncListeners(true);
+//
+//                if(HXSDKHelper.getInstance().isContactsSyncedWithServer()){
+//                    HXSDKHelper.getInstance().notifyForRecevingEvents();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(int code, String message) {
+//                HXSDKHelper.getInstance().noitifyGroupSyncListeners(false);
+//            }
+//
+//            @Override
+//            public void onProgress(int progress, String status) {
+//
+//            }
+//
+//        });
+//	}
 	
 	static void asyncFetchContactsFromServer(){
 	    HXSDKHelper.getInstance().asyncFetchContactsFromServer(new EMValueCallBack<List<String>>(){
@@ -695,11 +695,11 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
 		@Override
 		public void onConnected() {
-            boolean groupSynced = HXSDKHelper.getInstance().isGroupsSyncedWithServer();
+//            boolean groupSynced = HXSDKHelper.getInstance().isGroupsSyncedWithServer();
             boolean contactSynced = HXSDKHelper.getInstance().isContactsSyncedWithServer();
             
             // in case group and contact were already synced, we supposed to notify sdk we are ready to receive the events
-            if(groupSynced && contactSynced){
+            if(contactSynced){
                 new Thread(){
                     @Override
                     public void run(){
@@ -707,9 +707,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
                     }
                 }.start();
             }else{
-                if(!groupSynced){
-                    asyncFetchGroupsFromServer();
-                }
+//                if(!groupSynced){
+//                    asyncFetchGroupsFromServer();
+//                }
                 
                 if(!contactSynced){
                     asyncFetchContactsFromServer();
@@ -795,9 +795,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					// 刷新ui
 					if (currentTabIndex == 0)
 						chatHistoryFragment.refresh();
-					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-						GroupsActivity.instance.onResume();
-					}
+//					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
+//						GroupsActivity.instance.onResume();
+//					}
 				}
 			});
 
@@ -824,9 +824,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 						updateUnreadLabel();
 						if (currentTabIndex == 0)
 							chatHistoryFragment.refresh();
-						if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-							GroupsActivity.instance.onResume();
-						}
+//						if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
+//							GroupsActivity.instance.onResume();
+//						}
 					} catch (Exception e) {
 						EMLog.e(TAG, "refresh exception " + e.getMessage());
 					}
@@ -845,9 +845,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					updateUnreadLabel();
 					if (currentTabIndex == 0)
 						chatHistoryFragment.refresh();
-					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-						GroupsActivity.instance.onResume();
-					}
+//					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
+//						GroupsActivity.instance.onResume();
+//					}
 				}
 			});
 
@@ -890,9 +890,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 					// 刷新ui
 					if (currentTabIndex == 0)
 						chatHistoryFragment.refresh();
-					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-						GroupsActivity.instance.onResume();
-					}
+//					if (CommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
+//						GroupsActivity.instance.onResume();
+//					}
 				}
 			});
 		}
