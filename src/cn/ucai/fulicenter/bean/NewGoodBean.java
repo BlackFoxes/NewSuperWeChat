@@ -50,7 +50,7 @@ public class NewGoodBean implements Serializable {
     private String colorName;
     private String colorCode;
     private String colorUrl;
-    private int addTime;
+    private Long  addTime;
 
     public int getId() {
         return id;
@@ -189,11 +189,11 @@ public class NewGoodBean implements Serializable {
         this.colorUrl = colorUrl;
     }
 
-    public int getAddTime() {
+    public Long getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(int addTime) {
+    public void setAddTime(Long addTime) {
         this.addTime = addTime;
     }
 
