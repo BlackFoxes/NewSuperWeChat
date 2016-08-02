@@ -94,6 +94,8 @@ public class FuLiCenterMainActivity extends BaseActivity {
     private void setCurrentFragment(int currentindex) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_fragment, fragments[currentindex]);
+        transaction.commit();
+
 
 
     }
