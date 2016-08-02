@@ -3,11 +3,27 @@
     android:layout_height="match_parent"
     android:background="@color/list_background"
     >
-
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvGood"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/refresh_head_hint" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvGood"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </FrameLayout>
