@@ -13,8 +13,16 @@
  */
 package cn.ucai.fulicenter.utils;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
+import com.squareup.picasso.Picasso;
+
+import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.domain.User;
 
 public class ImageUtils {
 //	public static String getThumbnailImagePath(String imagePath) {
@@ -41,6 +49,18 @@ public class ImageUtils {
         EMLog.d("msg", "thum image path:" + path);
         return path;
     }
-	
-	
+
+//	public static void setUserAvatar(Context context, String username, ImageView imageView){
+//		User user = getUserInfo(username);
+//		if(user != null && user.getAvatar() != null){
+//			Picasso.with(context).load(user.getAvatar()).placeholder(R.drawable.default_avatar).into(imageView);
+//		}else{
+//			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+//		}
+//	}
+	public static void setGoodAvatar(String path, Context mContext, ImageView mGoodAvatar) {
+		String url = I.DOWNLOAD_BOUTIQUE_IMG_URL+path;
+		Picasso.with(mContext).load(url).placeholder(R.drawable.nopic).into(mGoodAvatar);
+
+	}
 }
