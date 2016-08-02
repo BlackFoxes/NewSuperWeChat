@@ -147,7 +147,7 @@ public class OkHttpUtils2<T> {
         }
 
         Request.Builder builder = new Request.Builder().url(mUrl.toString());
-//        Log.e("okhttp","murl="+mUrl);
+        Log.e("OkHttpUtils2","url="+mUrl);
         Request request;
         if (mFileBody != null) {//上传文件
             request = builder.post(mFileBody).build();
@@ -187,6 +187,7 @@ public class OkHttpUtils2<T> {
                     mHandler.sendMessage(msg);
                 }else{
                     Gson gson = new Gson();
+                    Log.e("OkHttpUtils", "text=" + text);
                     T obj = gson.fromJson(text, mClazz);
                     Message msg = Message.obtain();
                     msg.what = RESULT_SUCCESS;
@@ -256,7 +257,7 @@ public class OkHttpUtils2<T> {
     public OkHttpUtils2<T> setRequestUrl(String request) {
         mUrl = new StringBuilder(I.SERVER_ROOT);
         mUrl.append(I.QUESTION).append(I.KEY_REQUEST).append(I.EQL).append(request);
-//        Log.e("okhttp","1 murl="+ mUrl.toString());
+        Log.e("OkHttpUtils","RequestUrl="+ mUrl.toString());
         return this;
     }
 
