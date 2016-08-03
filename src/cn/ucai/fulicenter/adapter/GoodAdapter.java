@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +17,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.FootHolder;
+import cn.ucai.fulicenter.activity.GoodDetailsActivity;
 import cn.ucai.fulicenter.bean.NewGoodBean;
 import cn.ucai.fulicenter.utils.ImageUtils;
 
@@ -50,7 +53,6 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         this.mArrayList = list;
         sortByAddTime();
     }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.e("onCreateViewHolder","onCreateViewHolder.isChecked");
@@ -68,16 +70,24 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         Log.e("onBindViewHolder","onBindViewHolder.isChecked");
         Log.e("onBindViewHolder", "position=" + position);
         if (holder instanceof FootHolder) {
             ((FootHolder) holder).mFooter.setText(textFooter);
 
         } else if (holder instanceof NewGoodHolder){
-            NewGoodBean goodBean = mArrayList.get(position);
+            final NewGoodBean goodBean = mArrayList.get(position);
             ((NewGoodHolder)holder).mPrice.setText(goodBean.getCurrencyPrice());
             ((NewGoodHolder)holder).mName.setText(goodBean.getGoodsName());
+            ((NewGoodHolder)holder).mGoodAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, GoodDetailsActivity.class);
+                    intent.putExtra(D.GoodDetails.KEY_GOODS_ID, goodBean.getGoodsId());
+                    mContext.startActivity(intent);
+                }
+            });
             ImageUtils.setGoodAvatar(goodBean.getGoodsThumb(),mContext,((NewGoodHolder)holder).mGoodAvatar);
         }
 
