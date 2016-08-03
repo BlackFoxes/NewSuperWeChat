@@ -27,14 +27,14 @@ public class PropertiesBean implements Serializable {
     private String colorCode;
     private String colorImg;
     private String colorUrl;
-    private AlbumsBean[] albumsBeen;
+    private AlbumsBean[] albums;
 
-    public AlbumsBean[] getAlbumsBeen() {
-        return albumsBeen;
+    public AlbumsBean[] getAlbums() {
+        return albums;
     }
 
-    public void setAlbumsBeen(AlbumsBean[] albumsBeen) {
-        this.albumsBeen = albumsBeen;
+    public void setAlbums(AlbumsBean[] albums) {
+        this.albums = albums;
     }
 
     public int getId() {
@@ -103,7 +103,7 @@ public class PropertiesBean implements Serializable {
                 ", colorCode='" + colorCode + '\'' +
                 ", colorImg='" + colorImg + '\'' +
                 ", colorUrl='" + colorUrl + '\'' +
-                ", albumsBeen=" + Arrays.toString(albumsBeen) +
+                ", albums=" + Arrays.toString(albums) +
                 '}';
     }
 }

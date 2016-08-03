@@ -45,14 +45,14 @@ public class GoodDetailsBean implements Serializable {
     private String shareUrl;
     @JsonProperty("isPromote")
     private boolean isPromote;
-    private PropertiesBean[] propertiesBean;
+    private PropertiesBean[] properties;
 
-    public PropertiesBean[] getPropertiesBean() {
-        return propertiesBean;
+    public PropertiesBean[] getProperties() {
+        return properties;
     }
 
-    public void setPropertiesBean(PropertiesBean[] propertiesBean) {
-        this.propertiesBean = propertiesBean;
+    public void setProperties(PropertiesBean[] properties) {
+        this.properties = properties;
     }
 
     public int getId() {
@@ -192,8 +192,8 @@ public class GoodDetailsBean implements Serializable {
                 ", goodsImg='" + goodsImg + '\'' +
                 ", addTime=" + addTime +
                 ", shareUrl='" + shareUrl + '\'' +
-                ", promote=" + isPromote +
-                ", propertiesBean=" + Arrays.toString(propertiesBean) +
+                ", isPromote=" + isPromote +
+                ", properties=" + Arrays.toString(properties) +
                 '}';
     }
 }
