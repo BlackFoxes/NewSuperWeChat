@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.CategoryDetailsActivity;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.utils.ImageUtils;
@@ -73,10 +75,10 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         GroupListHolder mGroupListHolder = new GroupListHolder();
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.item_group_list, null);
-            mGroupListHolder.ivGroupAvatar = (ImageView) convertView.findViewById(R.id.ivCategoryGroup);
-            mGroupListHolder.ivGroupExpand = (ImageView) convertView.findViewById(R.id.ivCagegoryExpand);
-            mGroupListHolder.tvGroupTitle = (TextView) convertView.findViewById(R.id.tvCategoryGroup);
+            convertView = View.inflate(mContext, R.layout.item_category_group, null);
+            mGroupListHolder.ivGroupAvatar = (ImageView) convertView.findViewById(R.id.iv_group_thumb);
+            mGroupListHolder.ivGroupExpand = (ImageView) convertView.findViewById(R.id.iv_indicator);
+            mGroupListHolder.tvGroupTitle = (TextView) convertView.findViewById(R.id.tv_group_name);
             convertView.setTag(mGroupListHolder);
         } else {
             mGroupListHolder= (GroupListHolder) convertView.getTag();
@@ -95,17 +97,23 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildListHolder mChildListHolder = new ChildListHolder();
-        CategoryChildBean child = childList.get(groupPosition).get(childPosition);
+        final CategoryChildBean child = childList.get(groupPosition).get(childPosition);
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.item_child_list, null);
-            mChildListHolder.ivChildeAvatar = (ImageView) convertView.findViewById(R.id.ivChildCagegory);
-            mChildListHolder.tvChildCagegory = (TextView) convertView.findViewById(R.id.tvChildCagegory);
+            convertView = View.inflate(mContext, R.layout.item_category_child, null);
+            mChildListHolder.ivChildeAvatar = (ImageView) convertView.findViewById(R.id.iv_category_child_thumb);
+            mChildListHolder.tvChildCagegory = (TextView) convertView.findViewById(R.id.tv_category_child_name);
             convertView.setTag(mChildListHolder);
 
         } else {
             mChildListHolder = (ChildListHolder) convertView.getTag();
         }
         ImageUtils.setChildAvatar(child.getImageUrl(),mContext,mChildListHolder.ivChildeAvatar);
+        mChildListHolder.ivChildeAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, CategoryDetailsActivity.class).putExtra(I.CategoryChild.CAT_ID,child.getId()));
+            }
+        });
         mChildListHolder.tvChildCagegory.setText(child.getName());
         return convertView;
     }

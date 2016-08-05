@@ -51,25 +51,11 @@ public class CategoryFragment extends Fragment {
                     mGroupList.addAll(categoryGroupList);
                     mAdapter.notifyDataSetChanged();
                     Log.e(TAG, "group,categoryGroupList=" + categoryGroupList);
+                    int i = 0;
                     for (CategoryGroupBean g : categoryGroupList) {
-                        findCategoryChildList(new OkHttpUtils2.OnCompleteListener<CategoryChildBean[]>() {
-                            @Override
-                            public void onSuccess(CategoryChildBean[] childResult) {
-                                Log.e(TAG, "child,result=" + childResult);
-                                if (childResult != null) {
-                                    ArrayList<CategoryChildBean> childList = Utils.array2List(childResult);
-                                    Log.e(TAG, "childList.size=" + childList.size());
-                                    mChildList.add(childList);
-                                    mAdapter.notifyDataSetChanged();
-                                }
-                            }
-
-                            @Override
-                            public void onError(String error) {
-                                Log.e(TAG, "child,error=" + error);
-
-                            }
-                        },g.getId());
+                        mChildList.add(new ArrayList<CategoryChildBean>());
+                        findCategoryChildList(g.getId(),i);
+                        i++;
 
                     }
 
@@ -95,15 +81,31 @@ public class CategoryFragment extends Fragment {
                 .execute(listener);
     }
 
-    private void findCategoryChildList(OkHttpUtils2.OnCompleteListener<CategoryChildBean[]> listener,
-                                       int groupCategoryId) {
+    private void findCategoryChildList(int groupCategoryId,final int i) {
         OkHttpUtils2<CategoryChildBean[]> utils2 = new OkHttpUtils2<>();
         utils2.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
                 .addParam(I.CategoryChild.PARENT_ID, String.valueOf(groupCategoryId))
                 .addParam(I.PAGE_ID, String.valueOf(I.PAGE_ID_DEFAULT))
                 .addParam(I.PAGE_SIZE, String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(CategoryChildBean[].class)
-                .execute(listener);
+                .execute(new OkHttpUtils2.OnCompleteListener<CategoryChildBean[]>() {
+                    @Override
+                    public void onSuccess(CategoryChildBean[] childResult) {
+                        Log.e(TAG, "child,result=" + childResult);
+                        if (childResult != null) {
+                            ArrayList<CategoryChildBean> childList = Utils.array2List(childResult);
+                            Log.e(TAG, "childList.size=" + childList.size());
+                            mChildList.set(i, childList);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, "child,error=" + error);
+
+                    }
+                });
 
     }
 

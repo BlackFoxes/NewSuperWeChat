@@ -4,9 +4,11 @@
     android:layout_height="match_parent"
     >
     <ExpandableListView
+        android:layout_marginTop="10dp"
+        android:background="@color/list_background"
         android:id="@+id/epCagegory"
         android:layout_width="match_parent"
-        android:dividerHeight="5dp"
+        android:dividerHeight="8dp"
         android:layout_height="match_parent"
          />
 

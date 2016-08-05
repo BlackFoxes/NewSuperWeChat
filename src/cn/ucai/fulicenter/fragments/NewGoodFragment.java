@@ -46,6 +46,7 @@ public class NewGoodFragment extends Fragment {
         initView(inflate);
         setListener();
         initData();
+        Log.e(TAG, "mAdapter.adapterSort=" + mAdapter.adapterSort);
         return inflate;
 
     }
