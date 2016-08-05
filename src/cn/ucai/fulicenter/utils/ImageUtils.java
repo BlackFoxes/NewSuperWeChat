@@ -63,4 +63,15 @@ public class ImageUtils {
 		Picasso.with(mContext).load(url).placeholder(R.drawable.nopic).into(mGoodAvatar);
 
 	}
+	public static void setGroupAvatar(String path, Context mContext, ImageView mGoodAvatar) {
+		String url = I.DOWNLOAD_DOWNLOAD_CATEGORY_GROUP_IMAGE_URL+path;
+		Picasso.with(mContext).load(url).placeholder(R.drawable.nopic).into(mGoodAvatar);
+
+	}
+	public static void setChildAvatar(String path, Context mContext, ImageView mGoodAvatar) {
+		String url = I.DOWNLOAD_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL+path;
+		Picasso.with(mContext).load(url).placeholder(R.drawable.nopic).into(mGoodAvatar);
+
+	}
+
 }
