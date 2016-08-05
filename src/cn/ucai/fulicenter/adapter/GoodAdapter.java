@@ -34,6 +34,12 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     RecyclerView.ViewHolder holder;
     boolean isMore;
     String textFooter;
+    public int adapterSort = I.SORT_BY_PRICE_DESC;
+    public void setSort(int sort) {
+        this.adapterSort = sort;
+        sortBy();
+        notifyDataSetChanged();
+    }
 
     public void setTextFooter(String textFooter) {
         this.textFooter = textFooter;
@@ -51,7 +57,7 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public GoodAdapter(Context mContext, ArrayList<NewGoodBean> list) {
         this.mContext = mContext;
         this.mArrayList = list;
-        sortByAddTime();
+        sortBy();
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -115,7 +121,7 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }
         Log.e("initData", "mArrayList.size=" + mArrayList.size());
         mArrayList.addAll(newGoodBeen);
-        sortByAddTime();
+        sortBy();
         notifyDataSetChanged();
 
 
@@ -123,7 +129,7 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public void addData(ArrayList<NewGoodBean> newGoodBeen) {
         mArrayList.addAll(newGoodBeen);
-        sortByAddTime();
+        sortBy();
         notifyDataSetChanged();
 
     }
@@ -141,13 +147,37 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     }
 
-    private void sortByAddTime() {
+    private void sortBy() {
         Collections.sort(mArrayList, new Comparator<NewGoodBean>() {
+            int sortCount = 0;
             @Override
             public int compare(NewGoodBean goodLeft, NewGoodBean goodRight) {
-                return (int) (Long.valueOf(goodRight.getAddTime())-Long.valueOf(goodLeft.getAddTime()));
+                switch (adapterSort) {
+                    case I.SORT_BY_ADDTIME_ASC:
+                        sortCount = (int) (Long.valueOf(goodRight.getAddTime()) - Long.valueOf(goodLeft.getAddTime()));
+                        break;
+                    case I.SORT_BY_ADDTIME_DESC:
+                        sortCount = (int) (Long.valueOf(goodLeft.getAddTime()) - Long.valueOf(goodRight.getAddTime()));
+                        break;
+                    case I.SORT_BY_PRICE_ASC:
+                        sortCount = getPrice(goodLeft.getCurrencyPrice()) - getPrice(goodRight.getCurrencyPrice());
+
+                        break;
+                    case I.SORT_BY_PRICE_DESC:
+                        sortCount = getPrice(goodRight.getCurrencyPrice()) - getPrice(goodLeft.getCurrencyPrice());
+
+                        break;
+                }
+                return sortCount;
             }
         });
+
+    }
+
+
+    private int getPrice(String price) {
+        String s = price.substring(price.indexOf("￥") + 1);
+        return Integer.parseInt(s);
 
     }
 }
