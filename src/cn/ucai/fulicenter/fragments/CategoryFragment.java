@@ -56,15 +56,9 @@ public class CategoryFragment extends Fragment {
                         mChildList.add(new ArrayList<CategoryChildBean>());
                         findCategoryChildList(g.getId(),i);
                         i++;
-
                     }
-
-
                 }
-
-
             }
-
             @Override
             public void onError(String error) {
                 Log.e(TAG, "group,error=" + error);

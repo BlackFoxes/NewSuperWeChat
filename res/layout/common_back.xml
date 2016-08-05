@@ -15,13 +15,6 @@
             android:src="@drawable/back"
             />
     </LinearLayout>
-    <TextView
-        android:textColor="@color/white"
-        android:layout_toRightOf="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:text="商品详情"
-        android:textSize="20sp"
-        android:layout_centerVertical="true"
-        android:layout_height="wrap_content" />
+
 
 </RelativeLayout>

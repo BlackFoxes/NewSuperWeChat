@@ -5,7 +5,7 @@
     android:background="@color/list_background"
     >
 
-    <include layout="@layout/common_head_title" />
+    <include layout="@layout/common_back" />
     <LinearLayout
 
         android:orientation="horizontal"
@@ -22,7 +22,7 @@
         <Button
             android:id="@+id/btnSortAddTime"
             android:drawableRight="@drawable/arrow_order_down"
-            android:text="时间"
+            android:text="上架时间"
             android:layout_weight="1"
             android:background="@drawable/orange_radius"
             android:layout_width="wrap_content"

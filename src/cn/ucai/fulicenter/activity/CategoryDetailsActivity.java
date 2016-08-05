@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.activity;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -78,6 +79,9 @@ public class CategoryDetailsActivity extends BaseActivity {
     }
 
     class SortListener implements View.OnClickListener {
+        Drawable arrow;
+
+
 
         @Override
         public void onClick(View v) {
@@ -85,22 +89,33 @@ public class CategoryDetailsActivity extends BaseActivity {
                 case R.id.btnSortAddTime:
                     if (sortByAddTime) {
                         SortBy = I.SORT_BY_ADDTIME_ASC;
+                        arrow = getResources().getDrawable(R.drawable.arrow_order_up);
+
+
 
                     } else {
                         SortBy = I.SORT_BY_ADDTIME_DESC;
+                        arrow = getResources().getDrawable(R.drawable.arrow_order_down);
+
 
                     }
+                    btSortAddTime.setCompoundDrawablesWithIntrinsicBounds(null,null,arrow,null);
                     sortByAddTime = !sortByAddTime;
 
                     break;
                 case R.id.btnSortPrice:
                     if (sortByPrice) {
                         SortBy = I.SORT_BY_PRICE_ASC;
+                        arrow = getResources().getDrawable(R.drawable.arrow_order_up);
+
 
                     } else {
                         SortBy = I.SORT_BY_PRICE_DESC;
+                        arrow = getResources().getDrawable(R.drawable.arrow_order_down);
+
 
                     }
+                    btSortPrice.setCompoundDrawablesWithIntrinsicBounds(null,null,arrow,null);
                     sortByPrice = !sortByPrice;
                     break;
             }
