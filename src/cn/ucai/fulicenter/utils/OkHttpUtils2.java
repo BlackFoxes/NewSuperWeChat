@@ -108,6 +108,7 @@ public class OkHttpUtils2<T> {
                 switch (msg.what) {
                     case RESULT_SUCCESS:
                         T obj = (T) msg.obj;//获得解析的结果
+                        Log.e("OkHttpUtils", "handleMessage,msg.what =" + msg.what);
                         if(mListener!=null) {
                             mListener.onSuccess(obj);//回调解析成功的代码
                         }
@@ -188,11 +189,17 @@ public class OkHttpUtils2<T> {
                 }else{
                     Gson gson = new Gson();
                     Log.e("OkHttpUtils", "text=" + text);
+                    Log.e("OkHttpUtils", "mClazz=" +mClazz);
                     T obj = gson.fromJson(text, mClazz);
+                    Log.e("OkHttpUtils", "T obj=" + obj);
                     Message msg = Message.obtain();
                     msg.what = RESULT_SUCCESS;
+                    Log.e("OkHttpUtils", "msg.what =" + msg.what);
+
                     msg.obj = obj;
                     mHandler.sendMessage(msg);
+                    Log.e("OkHttpUtils", "mHandler.sendMessage" );
+
                 }
             }
         });

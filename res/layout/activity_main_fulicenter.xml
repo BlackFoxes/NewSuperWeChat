@@ -37,7 +37,7 @@
             <RadioButton
                 android:id="@+id/rb_boutique"
                 style="@style/menu_item_style"
-                android:text="精品"
+                android:text="精选"
                 android:button="@null"
                 android:onClick="onCheckedChange"
                 android:checked="false"

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="55dp">
+    <ImageView
+        android:id="@+id/ivCategoryGroup"
+        android:src="@drawable/nopic"
+        android:layout_width="40dp"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/tvCategoryGroup"
+        android:text="商品"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:textSize="20sp"
+        android:layout_toRightOf="@+id/ivCategoryGroup"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/ivCagegoryExpand"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/expand_on"
+        android:layout_width="30dp"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

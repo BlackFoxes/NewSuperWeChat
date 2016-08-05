@@ -85,6 +85,13 @@
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustResize|stateVisible">
         </activity>
+        <!-- 精选二级页面-->
+        <activity
+            android:name="cn.ucai.fulicenter.activity.BoutiqueDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustResize|stateVisible">
+        </activity>
 
 
         <!-- 注册 -->
