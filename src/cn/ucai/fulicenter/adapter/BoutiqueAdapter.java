@@ -52,12 +52,11 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Log.e(TAG, "BoutiqueAdapter.onBindViewHolder.isChecked");
         Log.e(TAG, "BoutiqueAdapter.onBindViewHolder.position="+position);
-        final BoutiqueBean boutiqueBean = mArrayList.get(position);
-
         if (holder instanceof FootHolder) {
             ((FootHolder)holder).mFooter.setText(tvHint);
         } else if (holder instanceof BoutiqueItemHolder) {
-                ((BoutiqueItemHolder)holder).tvBoutiqueTitle.setText(boutiqueBean.getTitle());
+           final BoutiqueBean boutiqueBean = mArrayList.get(position);
+            ((BoutiqueItemHolder)holder).tvBoutiqueTitle.setText(boutiqueBean.getTitle());
                 ((BoutiqueItemHolder)holder).tvBoutiqueDs.setText(boutiqueBean.getDescription());
                 ((BoutiqueItemHolder)holder).tvBoutiqueName.setText(boutiqueBean.getName());
                 ImageUtils.setGoodAvatar(boutiqueBean.getImageurl(),mContext,((BoutiqueItemHolder)holder).mBoutiqueAvatar);
@@ -82,7 +81,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.e(TAG, "getItemCount=" + getItemCount());
+        Log.e(TAG, "getItemViewType,getItemCount=" + getItemCount());
         if (position == getItemCount()-1) {
             return I.TYPE_FOOTER;
         }
