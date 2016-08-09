@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -95,7 +96,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ChildListHolder mChildListHolder = new ChildListHolder();
         final CategoryChildBean child = childList.get(groupPosition).get(childPosition);
         if (convertView == null) {
@@ -111,7 +112,14 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         mChildListHolder.ivChildeAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, CategoryDetailsActivity.class).putExtra(I.CategoryChild.CAT_ID,child.getId()));
+                Intent mIntent = new Intent(mContext, CategoryDetailsActivity.class);
+                mIntent.putExtra(I.CategoryChild.CAT_ID, child.getId());
+                Bundle mBundle = new Bundle();
+                mBundle.putSerializable("childList",childList.get(groupPosition));
+                mIntent.putExtras(mBundle);
+                String groupName = groupList.get(groupPosition).getName();
+                mIntent.putExtra("groupName", groupName);
+                mContext.startActivity(mIntent);
             }
         });
         mChildListHolder.tvChildCagegory.setText(child.getName());

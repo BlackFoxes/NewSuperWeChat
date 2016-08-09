@@ -4,10 +4,27 @@
     android:orientation="vertical"
     android:background="@color/list_background"
     >
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <include layout="@layout/common_back" />
-    <LinearLayout
+        <cn.ucai.fulicenter.view.CatChildFilterButton
+            android:id="@+id/btnCatChildFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="55dp"
+            android:layout_marginRight="10dp"
+            android:drawableRight="@drawable/arrow2_up"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:text="分类"/>
 
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@drawable/orange_radius"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -19,10 +19,12 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.GoodAdapter;
 import cn.ucai.fulicenter.adapter.NewFriendsMsgAdapter;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.NewGoodBean;
 import cn.ucai.fulicenter.utils.DisplayUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.Utils;
+import cn.ucai.fulicenter.view.CatChildFilterButton;
 
 /**
  * Created by Administrator on 2016/8/5.
@@ -38,19 +40,25 @@ public class CategoryDetailsActivity extends BaseActivity {
     TextView tvRefresh;
     int pageId;
     int childId;
+    ArrayList<CategoryChildBean> childList;
     boolean sortByPrice;
     boolean sortByAddTime;
     int SortBy;
     Button btSortPrice;
     Button btSortAddTime;
+    String groupName;
     static final String TAG = CategoryDetailsActivity.class.getSimpleName();
     int action = I.ACTION_DOWNLOAD;
+    CatChildFilterButton mChildButton;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.activity_category_details);
         mContext = this;
         childId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
+        Bundle bundle = getIntent().getExtras();
+        childList= (ArrayList<CategoryChildBean>) bundle.getSerializable("childList");
+        groupName = getIntent().getStringExtra("groupName");
         pageId = 0;
         initView();
         setListener();
@@ -67,6 +75,7 @@ public class CategoryDetailsActivity extends BaseActivity {
                 R.color.google_green,
                 R.color.google_red
         );
+        mChildButton = (CatChildFilterButton) findViewById(R.id.btnCatChildFilter);
         btSortAddTime = (Button) findViewById(R.id.btnSortAddTime);
         btSortPrice = (Button) findViewById(R.id.btnSortPrice);
         mGridLayoutManager = new GridLayoutManager(mContext, 2);
@@ -128,8 +137,16 @@ public class CategoryDetailsActivity extends BaseActivity {
         setPullDownRefreshListener();
         setPullUpRefreshListener();
         setSoryByListener();
+        setPopuWindowListener();
         DisplayUtils.initBack(this);
     }
+
+    private void setPopuWindowListener() {
+        mChildButton.setText(groupName);
+        mChildButton.setOnCatFilterClickListener(groupName, childList);
+
+    }
+
 
     private void setSoryByListener() {
         SortListener sortListener = new SortListener();
