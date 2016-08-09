@@ -51,6 +51,7 @@ import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.User;
+import cn.ucai.fulicenter.task.DownloadCartListTask;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
@@ -295,6 +296,8 @@ public class LoginActivity extends BaseActivity {
 		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
 		Log.e(TAG, "currentUsername="+currentUsername);
 		new DownloadCollectCountTask(currentUsername,LoginActivity.this).execute();
+		new DownloadCartListTask(currentUsername, LoginActivity.this).execute();
+
 
 		try {
             // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
