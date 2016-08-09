@@ -23,6 +23,7 @@ import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.utils.DisplayUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
+import cn.ucai.fulicenter.utils.Utils;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
 /**
@@ -53,6 +54,7 @@ public class GoodDetailsActivity extends BaseActivity {
         CollectListener mListener=new CollectListener();
         ivCollect.setOnClickListener(mListener);
         ivShared.setOnClickListener(mListener);
+        ivCart.setOnClickListener(mListener);
 
 
     }
@@ -138,7 +140,13 @@ public class GoodDetailsActivity extends BaseActivity {
                     case R.id.iv_shared:
                         showShare();
                         break;
+                    case R.id.iv_cart:
+                        if (DemoHXSDKHelper.getInstance().isLogined()) {
 
+
+                        }
+
+                        break;
                 }
         }
     }
@@ -264,7 +272,12 @@ public class GoodDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (DemoHXSDKHelper.getInstance().isLogined()) {
+            int count = Utils.getCartCount();
+            tvCartCount.setText(String.valueOf(count));
+            tvCartCount.setVisibility(View.VISIBLE);
             initCollectImage();
+        } else {
+            tvCartCount.setVisibility(View.GONE);
         }
     }
 
@@ -299,4 +312,5 @@ public class GoodDetailsActivity extends BaseActivity {
 
 
     }
+
 }
