@@ -9,35 +9,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import cn.ucai.fulicenter.D;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.FootHolder;
 import cn.ucai.fulicenter.activity.GoodDetailsActivity;
+import cn.ucai.fulicenter.bean.CollectBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.NewGoodBean;
+import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.utils.ImageUtils;
+import cn.ucai.fulicenter.utils.OkHttpUtils2;
 
 /**
  * Created by Administrator on 2016/8/1.
  */
-public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     Context mContext;
-    ArrayList<NewGoodBean> mArrayList;
+    ArrayList<CollectBean> mArrayList;
     RecyclerView.ViewHolder holder;
     boolean isMore;
     String textFooter;
     public int adapterSort = I.SORT_BY_ADDTIME_ASC;
+    final static String TAG = CollectAdapter.class.getSimpleName();
     public void setSort(int sort) {
         this.adapterSort = sort;
-        sortBy();
         notifyDataSetChanged();
     }
 
@@ -54,10 +57,9 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         isMore = more;
     }
 
-    public GoodAdapter(Context mContext, ArrayList<NewGoodBean> list) {
+    public CollectAdapter(Context mContext, ArrayList<CollectBean> list) {
         this.mContext = mContext;
         this.mArrayList = list;
-        sortBy();
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -68,8 +70,8 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 holder = new FootHolder(inflate);
                 break;
             case I.TYPE_ITEM:
-                View inflate1 = LayoutInflater.from(mContext).inflate(R.layout.new_good_details, null, false);
-                holder = new NewGoodHolder(inflate1);
+                View inflate1 = LayoutInflater.from(mContext).inflate(R.layout.item_collect, null, false);
+                holder = new CollectHolder(inflate1);
                 break;
         }
         return holder;
@@ -82,11 +84,10 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         if (holder instanceof FootHolder) {
             ((FootHolder) holder).mFooter.setText(textFooter);
 
-        } else if (holder instanceof NewGoodHolder){
-            final NewGoodBean goodBean = mArrayList.get(position);
-            ((NewGoodHolder)holder).mPrice.setText(goodBean.getCurrencyPrice());
-            ((NewGoodHolder)holder).mName.setText(goodBean.getGoodsName());
-            ((NewGoodHolder)holder).mGoodAvatar.setOnClickListener(new View.OnClickListener() {
+        } else if (holder instanceof CollectHolder){
+            final CollectBean goodBean = mArrayList.get(position);
+            ((CollectHolder)holder).mName.setText(goodBean.getGoodsName());
+            ((CollectHolder)holder).mGoodAvatar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, GoodDetailsActivity.class);
@@ -94,7 +95,43 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     mContext.startActivity(intent);
                 }
             });
-            ImageUtils.setGoodAvatar(goodBean.getGoodsThumb(),mContext,((NewGoodHolder)holder).mGoodAvatar);
+            ImageUtils.setGoodAvatar(goodBean.getGoodsThumb(),mContext,((CollectHolder)holder).mGoodAvatar);
+            ((CollectHolder)holder).ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OkHttpUtils2<MessageBean> utils2 = new OkHttpUtils2<MessageBean>();
+                    utils2.setRequestUrl(I.REQUEST_DELETE_COLLECT)
+                            .addParam(I.Collect.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
+                            .addParam(I.Collect.GOODS_ID, String.valueOf(goodBean.getGoodsId()))
+                            .targetClass(MessageBean.class)
+                            .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                                @Override
+                                public void onSuccess(MessageBean msg) {
+                                    Log.e(TAG, "result=" + msg);
+                                    if (msg != null && msg.isSuccess()) {
+                                        mArrayList.remove(goodBean);
+                                        new DownloadCollectCountTask(FuLiCenterApplication.getInstance().getUserName(), mContext).execute();
+                                        notifyDataSetChanged();
+
+                                    } else {
+                                        Log.e(TAG, "delete collect id failed");
+
+                                    }
+                                    Toast.makeText(mContext,msg.getMsg(),Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    Log.e(TAG, "error=" + error);
+
+
+                                }
+                            });
+
+                }
+            });
+
         }
 
 
@@ -115,64 +152,37 @@ public class GoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }
     }
 
-    public void initData(ArrayList<NewGoodBean> newGoodBeen) {
+    public void initData(ArrayList<CollectBean> newGoodBeen) {
         if (mArrayList != null) {
             mArrayList.clear();
         }
         Log.e("initData", "mArrayList.size=" + mArrayList.size());
         mArrayList.addAll(newGoodBeen);
-        sortBy();
         notifyDataSetChanged();
 
 
     }
 
-    public void addData(ArrayList<NewGoodBean> newGoodBeen) {
+    public void addData(ArrayList<CollectBean> newGoodBeen) {
         mArrayList.addAll(newGoodBeen);
-        sortBy();
         notifyDataSetChanged();
 
     }
 
-    class NewGoodHolder extends RecyclerView.ViewHolder {
+    class CollectHolder extends RecyclerView.ViewHolder {
         ImageView mGoodAvatar;
-        TextView mPrice;
+        ImageView ivDelete;
         TextView mName;
-        public NewGoodHolder(View itemView) {
+        public CollectHolder(View itemView) {
             super(itemView);
             mGoodAvatar = (ImageView) itemView.findViewById(R.id.niv_good_thumb);
-            mPrice = (TextView) itemView.findViewById(R.id.tv_good_price);
+            ivDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
             mName = (TextView) itemView.findViewById(R.id.tv_good_name);
         }
 
     }
 
-    private void sortBy() {
-        Collections.sort(mArrayList, new Comparator<NewGoodBean>() {
-            int sortCount = 0;
-            @Override
-            public int compare(NewGoodBean goodLeft, NewGoodBean goodRight) {
-                switch (adapterSort) {
-                    case I.SORT_BY_ADDTIME_ASC:
-                        sortCount = (int) (Long.valueOf(goodRight.getAddTime()) - Long.valueOf(goodLeft.getAddTime()));
-                        break;
-                    case I.SORT_BY_ADDTIME_DESC:
-                        sortCount = (int) (Long.valueOf(goodLeft.getAddTime()) - Long.valueOf(goodRight.getAddTime()));
-                        break;
-                    case I.SORT_BY_PRICE_ASC:
-                        sortCount = getPrice(goodLeft.getCurrencyPrice()) - getPrice(goodRight.getCurrencyPrice());
 
-                        break;
-                    case I.SORT_BY_PRICE_DESC:
-                        sortCount = getPrice(goodRight.getCurrencyPrice()) - getPrice(goodLeft.getCurrencyPrice());
-
-                        break;
-                }
-                return sortCount;
-            }
-        });
-
-    }
 
 
     private int getPrice(String price) {
