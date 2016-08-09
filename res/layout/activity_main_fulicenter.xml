@@ -6,17 +6,18 @@
     android:layout_height="match_parent">
 
     <FrameLayout
+        android:layout_weight="8"
+        android:layout_above="@+id/layout_list"
         android:id="@+id/fl_fragment"
-        android:layout_weight="65"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="0dp" />
     <LinearLayout
         android:layout_weight="1"
+        android:id="@+id/layout_list"
         android:background="@color/bottom_bar_taobao_bg"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="0dp">
         <RadioGroup
             android:layout_weight="3"
             android:orientation="horizontal"

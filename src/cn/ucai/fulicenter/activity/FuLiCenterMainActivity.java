@@ -1,13 +1,17 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteFullException;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragments.BoutiqueFragment;
 import cn.ucai.fulicenter.fragments.CartFragment;
@@ -25,11 +29,15 @@ public class FuLiCenterMainActivity extends BaseActivity {
     RadioButton[] mrbTabs;
     int index;
     int currentindex;
+    FuLiCenterMainActivity mContext;
+    static final int ACTION_LOGIN = 0;
+    static final String TAG = FuLiCenterMainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fulicenter);
+        mContext = this;
         initView();
         initFragments();
     }
@@ -81,7 +89,11 @@ public class FuLiCenterMainActivity extends BaseActivity {
                 index = 3;
                 break;
             case R.id.rb_personal:
-                index = 4;
+                if (DemoHXSDKHelper.getInstance().isLogined()) {
+                    index = 4;
+                } else {
+                    startActivity(new Intent(this,LoginActivity.class));
+                }
                 break;
         }
         if (currentindex != index) {
@@ -99,6 +111,20 @@ public class FuLiCenterMainActivity extends BaseActivity {
 
 
     }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == ACTION_LOGIN) {
+//            if (DemoHXSDKHelper.getInstance().isLogined()) {
+//                Log.e("onActivityResult", "index=" + index);
+//                index = 4;
+//                currentindex = index;
+//            }
+//
+//        }
+//
+//    }
 
     private void setRadioButtonStatus(int index) {
         for (int i=0;i<mrbTabs.length;i++) {
@@ -110,5 +136,21 @@ public class FuLiCenterMainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e(TAG, "currentindex=" + currentindex);
+        Log.e(TAG, "index=" + index);
+        currentindex = index;
+        if (DemoHXSDKHelper.getInstance().isLogined()) {
+            currentindex =4;
+
+        } else if (!DemoHXSDKHelper.getInstance().isLogined()&&currentindex == 4) {
+            currentindex = 0;
+        }
+            setCurrentFragment(currentindex);
+            setRadioButtonStatus(currentindex);
+
+        }
 
 }
