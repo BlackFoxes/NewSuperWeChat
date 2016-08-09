@@ -131,9 +131,17 @@ public class FuLiCenterApplication extends Application {
 	}
 
 	/**
-	 * 全局变量中的好友集合
+	 * 全局变量中收藏商品的个数
 	 */
+	public int collectCount;
 
+	public int getCollectCount() {
+		return collectCount;
+	}
+
+	public void setCollectCount(int collectCount) {
+		this.collectCount = collectCount;
+	}
 
 	/**
 	 * 全局变量中的群组集合
