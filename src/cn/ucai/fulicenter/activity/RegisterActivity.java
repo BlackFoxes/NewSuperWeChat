@@ -32,6 +32,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
+import cn.ucai.fulicenter.utils.DisplayUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -65,13 +66,6 @@ public class RegisterActivity extends BaseActivity {
 		setListener();
 	}
 	private void setListener() {
-		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-
-			}
-		});
 		findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -85,6 +79,7 @@ public class RegisterActivity extends BaseActivity {
 				setAvatar = new OnSetAvatarListener(RegisterActivity.this, R.id.layout_register, getAvatarName(), I.AVATAR_TYPE_USER_PATH);
 			}
 		});
+		DisplayUtils.initBackWithTitle(this,"账户注册");
 	}
 
 	@Override
