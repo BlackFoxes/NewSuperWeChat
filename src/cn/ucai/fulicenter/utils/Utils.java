@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.Pager;
 import cn.ucai.fulicenter.bean.Result;
 
@@ -259,5 +261,17 @@ public class Utils {
             e.printStackTrace();
         }
         return  null;
+    }
+
+
+    public static int getCartCount() {
+        int numCart = 0;
+        List<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
+        for (CartBean cartBean : cartList) {
+            numCart += cartBean.getCount();
+
+        }
+        return numCart;
+
     }
 }
