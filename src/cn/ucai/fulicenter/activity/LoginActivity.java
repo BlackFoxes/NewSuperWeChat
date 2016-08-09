@@ -51,8 +51,10 @@ import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.User;
+import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
+import cn.ucai.fulicenter.utils.DisplayUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
@@ -115,6 +117,7 @@ public class LoginActivity extends BaseActivity {
 
 			}
 		});
+		DisplayUtils.initBackWithTitle(this,"账户登录");
 	}
 
 	/**
@@ -290,6 +293,8 @@ public class LoginActivity extends BaseActivity {
 		FuLiCenterApplication.getInstance().setUserAvatar(userAvatar);
 		FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 		new DownloadContactListTask(currentUsername,LoginActivity.this).execute();
+		Log.e(TAG, "currentUsername="+currentUsername);
+		new DownloadCollectCountTask(currentUsername,LoginActivity.this).execute();
 
 		try {
             // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
@@ -328,9 +333,9 @@ public class LoginActivity extends BaseActivity {
             pd.dismiss();
         }
 		// 进入主页面
-		Intent intent = new Intent(LoginActivity.this,
-                MainActivity.class);
-		startActivity(intent);
+//		Intent intent = new Intent(LoginActivity.this,
+//                FuLiCenterMainActivity.class);
+//		startActivity(intent);
 
 		finish();
 	}
