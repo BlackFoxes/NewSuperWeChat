@@ -197,8 +197,8 @@ public class FuLiCenterMainActivity extends BaseActivity {
 
     private void initCartCountListener() {
         IntentFilter filter = new IntentFilter("update_cart_list");
+        filter.addAction("update_user");
         registerReceiver(mReceiver, filter);
-
     }
 
     @Override
