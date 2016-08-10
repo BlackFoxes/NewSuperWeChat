@@ -46,7 +46,7 @@ public final class HttpUtils {
 				}
 				sb.deleteCharAt(sb.length()-1);
 			}
-			request=new HttpGet(sb.toString());			
+			request=new HttpGet(sb.toString());
 			break;
 		case METHOD_POST:
 			HttpPost post=new HttpPost(uri);
