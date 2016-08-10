@@ -147,13 +147,13 @@ public class FuLiCenterApplication extends Application {
 	/**
 	 * 全局变量中的Cart集合
 	 */
-	public List<CartBean> cartList = new ArrayList<>();
+	public ArrayList<CartBean> cartList = new ArrayList<>();
 
-	public List<CartBean> getCartList() {
+	public ArrayList<CartBean> getCartList() {
 		return cartList;
 	}
 
-	public void setCartList(List<CartBean> cartList) {
+	public void setCartList(ArrayList<CartBean> cartList) {
 		this.cartList = cartList;
 	}
 

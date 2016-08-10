@@ -30,7 +30,6 @@ public class DownloadCartListTask {
         this.mContext = context;
         this.username = username;
     }
-
     public void execute() {
         final OkHttpUtils2<CartBean[]> utils2 = new OkHttpUtils2<>();
         utils2.setRequestUrl(I.REQUEST_FIND_CARTS)
@@ -44,7 +43,7 @@ public class DownloadCartListTask {
                         Log.e(TAG, "carts=" + carts);
                         if (carts != null) {
                             ArrayList<CartBean> cartList = Utils.array2List(carts);
-                            List<CartBean> list = FuLiCenterApplication.getInstance().getCartList();
+                            ArrayList<CartBean> list = FuLiCenterApplication.getInstance().getCartList();
                             for (final CartBean cartbean : cartList) {
                                 if (!list.contains(cartbean)) {
                                     OkHttpUtils2<GoodDetailsBean> utils = new OkHttpUtils2<GoodDetailsBean>();
@@ -64,8 +63,6 @@ public class DownloadCartListTask {
                                                 }
                                             });
                                     list.add(cartbean);
-
-
                                 } else {
                                     list.get(list.indexOf(cartbean)).setChecked(cartbean.isChecked());
                                     list.get(list.indexOf(cartbean)).setCount(cartbean.getCount());
