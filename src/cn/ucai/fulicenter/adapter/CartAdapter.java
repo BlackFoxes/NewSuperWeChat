@@ -90,69 +90,11 @@ public class CartAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             mCart.setCount(mCart.getCount() + num);
-            if (num > 0) {
-                OkHttpUtils2<MessageBean> utils2 = new OkHttpUtils2<>();
-                try {
-                    utils2.setRequestUrl(I.REQUEST_ADD_CART)
-                            .addParam(I.Cart.GOODS_ID, String.valueOf(mCart.getGoodsId()))
-                            .addParam(I.Cart.USER_NAME, mCart.getUserName())
-                            .addParam(I.Collect.GOODS_NAME, URLEncoder.encode(mCart.getGoods().getGoodsName(),"utf-8"))
-                            .addParam(I.Collect.GOODS_ENGLISH_NAME, mCart.getGoods().getGoodsEnglishName())
-                            .addParam(I.Cart.GOODS_THUMB, mCart.getGoods().getGoodsThumb())
-                            .addParam(I.Collect.GOODS_IMG, mCart.getGoods().getGoodsImg())
-                            .addParam(I.Collect.ADD_TIME, String.valueOf(mCart.getGoods().getAddTime()))
-                            .targetClass(MessageBean.class)
-                            .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
-                                @Override
-                                public void onSuccess(MessageBean result) {
-                                    if (result != null && result.isSuccess()) {
-                                        Log.e(TAG, "result=" + result);
-                                        ArrayList<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
-                                        if (cartList.indexOf(mCart)>0) {
-                                            cartList.get(cartList.indexOf(mCart)).setCount((mCart.getCount() + num));
-                                            mContext.sendStickyBroadcast(new Intent("update_cart_list"));
-
-                                    }
-                                    }
-
-                                }
-
-                                @Override
-                                public void onError(String error) {
-                                    Log.e(TAG, "error=" + error);
-
-
-                                }
-                            });
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-            } else {
-                OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<>();
-                utils.setRequestUrl(I.REQUEST_DELETE_CART)
-                        .addParam(I.Cart.ID, String.valueOf(mCart.getId()))
-                        .targetClass(MessageBean.class)
-                        .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
-                            @Override
-                            public void onSuccess(MessageBean result) {
-                                Log.e(TAG, "result=" + result);
-                                ArrayList<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
-                                if (cartList.indexOf(mCart)>0) {
-                                    cartList.get(cartList.indexOf(mCart)).setCount((mCart.getCount() + num));
-                                    mContext.sendStickyBroadcast(new Intent("update_cart_list"));
-                                }
-                            }
-
-                            @Override
-                            public void onError(String error) {
-                                Log.e(TAG, "error=" + error);
-                            }
-                        });
-
-            }
+            Log.e(TAG, "mCart.setCount=" + mCart.getCount());
+            new UpdateCartTask(mContext, mCart).execute();
 
         }
+
     }
     @Override
     public int getItemCount() {

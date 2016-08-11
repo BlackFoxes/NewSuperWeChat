@@ -39,7 +39,9 @@ public class UpdateCartTask {
                             ArrayList<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
                             if (cartList.indexOf(mCartBean)>0) {
                                 cartList.get(cartList.indexOf(mCartBean)).setChecked(mCartBean.isChecked());
+                                cartList.get(cartList.indexOf(mCartBean)).setCount(mCartBean.getCount());
 //                                cartList.set(cartList.indexOf(mCartBean), mCartBean);
+
 
                             }
                             Log.e(TAG, "result=" + result);
