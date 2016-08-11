@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.ucai.fulicenter.D;
@@ -18,9 +23,11 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumsBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
+import cn.ucai.fulicenter.task.UpdateCartTask;
 import cn.ucai.fulicenter.utils.DisplayUtils;
 import cn.ucai.fulicenter.utils.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.Utils;
@@ -55,6 +62,28 @@ public class GoodDetailsActivity extends BaseActivity {
         ivCollect.setOnClickListener(mListener);
         ivShared.setOnClickListener(mListener);
         ivCart.setOnClickListener(mListener);
+        setReceiverListener();
+
+
+    }
+
+    GoodDetailsReceiver mReceiver=new GoodDetailsReceiver();
+
+    class GoodDetailsReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int count = Utils.getCartCount();
+            tvCartCount.setText(String.valueOf(count));
+            tvCartCount.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    private void setReceiverListener() {
+        IntentFilter filter = new IntentFilter("update_cart_list");
+        registerReceiver(mReceiver, filter);
+
 
 
     }
@@ -120,7 +149,6 @@ public class GoodDetailsActivity extends BaseActivity {
                                                     isCollected = true;
                                                     setCollectButton();
                                                     new DownloadCollectCountTask(FuLiCenterApplication.getInstance().getUserName(), mContext).execute();
-
                                                 }
 
                                             }
@@ -142,13 +170,41 @@ public class GoodDetailsActivity extends BaseActivity {
                         break;
                     case R.id.iv_cart:
                         if (DemoHXSDKHelper.getInstance().isLogined()) {
-
-
+                            addCart();
                         }
 
                         break;
                 }
         }
+    }
+
+    private void addCart() {
+        Log.e(TAG, "addCart");
+        ArrayList<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
+        CartBean cart = new CartBean();
+        boolean isExits = false;
+        for (CartBean cartBean : cartList) {
+
+            if (cartBean.getGoodsId() == mGoodId) {
+                cart.setCount(cartBean.getCount()+1);
+                cart.setChecked(cartBean.isChecked());
+                cart.setGoodsId(mGoodId);
+                cart.setUserName(cartBean.getUserName());
+                cart.setGoods(mGoodDetails);
+                cart.setId(cartBean.getId());
+                isExits = true;
+            }
+        }
+        Log.e(TAG, "addCart...isExits=" + isExits);
+        if (!isExits) {
+            cart.setGoodsId(mGoodId);
+            cart.setChecked(true);
+            cart.setCount(1);
+            cart.setGoods(mGoodDetails);
+            cart.setUserName(FuLiCenterApplication.getInstance().getUserName());
+
+        }
+        new UpdateCartTask(mContext,cart).execute();
     }
     private void showShare() {
         ShareSDK.initSDK(this);
@@ -312,5 +368,11 @@ public class GoodDetailsActivity extends BaseActivity {
 
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+
 
 }
