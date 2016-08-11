@@ -80,7 +80,6 @@ public class UpdateCartTask {
                             public void onError(String error) {
                                 Log.e(TAG, "error=" + error);
 
-
                             }
                         });
             } else if (mCartBean.getCount() <= 0) {
@@ -92,10 +91,8 @@ public class UpdateCartTask {
                             public void onSuccess(MessageBean result) {
                                 if (result != null && result.isSuccess()) {
                                     ArrayList<CartBean> cartList = FuLiCenterApplication.getInstance().getCartList();
-                                    if (cartList.indexOf(mCartBean)>0) {
+                                    if (cartList.indexOf(mCartBean)>=0) {
                                         cartList.remove(cartList.indexOf(mCartBean));
-//                                cartList.set(cartList.indexOf(mCartBean), mCartBean);
-
 
                                     }
                                     Log.e(TAG, "result=" + result);
@@ -112,8 +109,6 @@ public class UpdateCartTask {
 
                             }
                         });
-//            url=http://10.0.2.2:8080/ FuLiCenterServer/Server?request=add_cart&goodsId=&userName=
-//            & goodsName=&goodsEnglishName=&goodsThumb=&goodsImg=&addTime=&isSelected=
 
 
             }

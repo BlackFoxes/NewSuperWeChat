@@ -84,17 +84,13 @@ public class CartAdapter extends RecyclerView.Adapter {
             this.mCart = mCart;
             this.num = count;
         }
-//        url=http://10.0.2.2:8080/ FuLiCenterServer/Server?request=add_cart&goodsId=&userName=
-//                & goodsName=&goodsEnglishName=&goodsThumb=&goodsImg=&addTime=&isSelected=
 
         @Override
         public void onClick(View v) {
             mCart.setCount(mCart.getCount() + num);
             Log.e(TAG, "mCart.setCount=" + mCart.getCount());
             new UpdateCartTask(mContext, mCart).execute();
-
         }
-
     }
     @Override
     public int getItemCount() {
