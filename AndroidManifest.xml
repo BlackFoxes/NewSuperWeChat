@@ -32,6 +32,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+
     <permission
         android:name="cn.ucai.fulicenter.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -41,7 +42,13 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 通用权限 -->
+    <uses-permission android:name="android.permission.NFC"/>
+
+    <!-- 百度支付需要的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:name=".FuLiCenterApplication"
@@ -333,7 +340,191 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.BuyAddressActivity"></activity>
+        <activity android:name=".activity.BuyAddressActivity">
+
+        </activity>
+        <!-- Ping++ SDK -->
+        <activity
+            android:name="com.pingplusplus.android.PaymentActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 应用内快捷支付 -->
+
+
+        <activity
+            android:name="com.pingplusplus.libone.PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:theme="@android:style/Theme.Translucent"/>
+        <activity
+            android:name="com.pingplusplus.libone.PaySuccessActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"/>
+
+        <!-- 微信支付 -->
+        <activity-alias
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.pingplusplus.android.PaymentActivity" />
+
+        <!-- 支付宝 -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind" />
+
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind" />
+
+        <!-- 银联支付 sdk -->
+        <activity
+            android:name="com.unionpay.uppay.PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize" />
+
+        <!-- 百度钱包 -->
+        <activity
+            android:name="com.baidu.paysdk.login.LoginActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@style/EbpayThemeActivityWelcome"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.WelcomeActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivityWelcome"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.OrderHomeActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.PayResultActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.PcPwdCheckActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name="com.baidu.paysdk.ui.PwdCheckActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name="com.baidu.paysdk.ui.PwdSetAndConfirmActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name="com.baidu.paysdk.ui.PwdPayActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivitTranslucent"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name="com.baidu.paysdk.ui.PwdPaySmsActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivitTranslucent"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.WebViewActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.BindCardNoActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.BindCardDetailActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity
+            android:name="com.baidu.paysdk.ui.BindCardDetailCredit2Activity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity
+            android:name="com.baidu.paysdk.ui.BindCardDetailCreditActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity
+            android:name="com.baidu.paysdk.ui.BindSmsActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.baidu.paysdk.ui.SelectBindCardActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.baidu.paysdk.ui.SignChannelListActivity"
+            android:configChanges="keyboardHidden|navigation|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="@bool/bd_wallet_switch_global_debug"
+            android:hardwareAccelerated="false"
+            android:theme="@style/EbpayThemeActivit"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

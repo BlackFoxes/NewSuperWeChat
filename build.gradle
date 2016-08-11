@@ -30,6 +30,8 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.7.4.jar')
     compile files('libs/MobCommons-2016.0707.1708.jar')
     compile files('libs/MobTools-2016.0707.1708.jar')
+    compile project(':lib:pingpp_one')
+    compile project(':lib:bdwallet_pay_sdk')
 }
 
 android {
