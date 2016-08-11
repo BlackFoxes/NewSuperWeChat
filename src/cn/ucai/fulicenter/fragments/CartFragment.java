@@ -20,9 +20,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.BuyAddressActivity;
 import cn.ucai.fulicenter.adapter.BoutiqueAdapter;
 import cn.ucai.fulicenter.adapter.CartAdapter;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
@@ -42,10 +44,11 @@ public class CartFragment extends Fragment {
     LinearLayoutManager mLinearLayoutManager;
     TextView tvRefresh;
     Context mContext;
-    TextView tvAllPrice, tvSavedPrice,tvCartHint;
+    TextView tvAllPrice, tvSavedPrice,tvCartHint,tvBuy;
     private ArrayList<CartBean> mArraylist;
     static final String TAG = CartFragment.class.getSimpleName();
     int action = I.ACTION_DOWNLOAD;
+    int sumPrice = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +78,7 @@ public class CartFragment extends Fragment {
         tvAllPrice = (TextView) inflate.findViewById(R.id.allPrice);
         tvCartHint = (TextView) inflate.findViewById(R.id.tvCartHint);
         tvSavedPrice = (TextView) inflate.findViewById(R.id.savedPrice);
+        tvBuy = (TextView) inflate.findViewById(R.id.tv_buy);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
     }
 
@@ -82,6 +86,21 @@ public class CartFragment extends Fragment {
         setPullDownListener();
         setPullUpListener();
         initReceiverListener();
+        setBuyListener();
+    }
+
+    private void setBuyListener() {
+        tvBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (DemoHXSDKHelper.getInstance().isLogined() && sumPrice > 0) {
+                    mContext.startActivity(new Intent(mContext,BuyAddressActivity.class));
+                }
+
+            }
+        });
+
+
     }
 
     private void setPullUpListener() {
@@ -155,7 +174,7 @@ public class CartFragment extends Fragment {
 
     private void sumPrice() {
         if (mArraylist != null && mArraylist.size() > 0) {
-            int sumPrice = 0;
+            sumPrice =0;
             int rankPrice = 0;
             for (CartBean cart : mArraylist) {
                 GoodDetailsBean goods = cart.getGoods();

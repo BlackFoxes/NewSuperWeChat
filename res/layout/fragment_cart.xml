@@ -31,6 +31,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_buy"
             android:layout_height="50dp"
             android:gravity="center"
             android:text="购买"
